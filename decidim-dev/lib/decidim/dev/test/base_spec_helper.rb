@@ -2,8 +2,9 @@
 
 ENV["RAILS_ENV"] ||= "test"
 
-root_path = File.expand_path("..", Dir.pwd)
-engine_spec_dir = File.join(Dir.pwd, "spec")
+root_path = ENV["DECIDIM_ROOT_PATH"] || File.expand_path("..", Dir.pwd)
+engine_dir = ENV["DECIDIM_ENGINE_PATH"] || Dir.pwd
+engine_spec_dir = File.join(engine_dir, "spec")
 dummy_app_path = File.expand_path(File.join(root_path, "spec", "decidim_dummy_app"))
 
 if ENV["SIMPLECOV"]

@@ -44,6 +44,7 @@ module Decidim
             start_date: @form.start_date,
             end_date: @form.end_date,
             progress: @form.progress,
+            external_id: @form.external_id,
             decidim_accountability_status_id: @form.decidim_accountability_status_id
           )
         end

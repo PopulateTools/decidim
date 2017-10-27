@@ -29,6 +29,7 @@ describe Decidim::Accountability::Admin::ResultForm do
   let(:status) { create :status, feature: current_feature, key: "ongoing", name: { en: "Ongoing" } }
   let(:status_id) { status.id }
   let(:progress) { 89 }
+  let(:external_id) { 'external_id_123' }
 
   let(:attributes) do
     {
@@ -40,7 +41,8 @@ describe Decidim::Accountability::Admin::ResultForm do
       start_date: start_date,
       end_date: end_date,
       decidim_accountability_status_id: status_id,
-      progress: progress
+      progress: progress,
+      external_id: external_id
     }
   end
 

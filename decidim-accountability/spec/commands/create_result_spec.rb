@@ -13,6 +13,7 @@ describe Decidim::Accountability::Admin::CreateResult do
   let(:end_date) { Date.tomorrow }
   let(:status) { create :status, feature: current_feature, key: "ongoing", name: { en: "Ongoing" } }
   let(:progress) { 89 }
+  let(:external_id) { 'external_id_123' }
 
   let(:meeting_feature) do
     create(:feature, manifest_name: "meetings", participatory_space: participatory_process)
@@ -46,7 +47,8 @@ describe Decidim::Accountability::Admin::CreateResult do
       end_date: end_date,
       decidim_accountability_status_id: status.id,
       progress: progress,
-      parent_id: nil
+      parent_id: nil,
+      external_id: external_id
     )
   end
   let(:invalid) { false }
@@ -98,6 +100,16 @@ describe Decidim::Accountability::Admin::CreateResult do
       linked_meetings = result.linked_resources(:meetings, "meetings_through_proposals")
 
       expect(linked_meetings).to eq [meeting]
+    end
+
+    it "sets the progress" do
+      subject.call
+      expect(result.progress).to eq progress
+    end
+
+    it "sets the external_id" do
+      subject.call
+      expect(result.external_id).to eq external_id
     end
   end
 end

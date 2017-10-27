@@ -16,6 +16,7 @@ describe Decidim::Accountability::Admin::UpdateResult do
   let(:end_date) { Date.tomorrow }
   let(:status) { create :status, feature: result.feature, key: "finished", name: { en: "Finished" } }
   let(:progress) { 95 }
+  let(:external_id) { 'external_id_123' }
 
   let(:meeting) do
     create(
@@ -45,7 +46,8 @@ describe Decidim::Accountability::Admin::UpdateResult do
       end_date: end_date,
       decidim_accountability_status_id: status.id,
       progress: progress,
-      parent_id: nil
+      parent_id: nil,
+      external_id: external_id
     )
   end
   let(:invalid) { false }
@@ -91,6 +93,16 @@ describe Decidim::Accountability::Admin::UpdateResult do
       linked_meetings = result.linked_resources(:meetings, "meetings_through_proposals")
 
       expect(linked_meetings).to eq [meeting]
+    end
+
+    it "sets the progress" do
+      subject.call
+      expect(result.progress).to eq progress
+    end
+
+    it "sets the external_id" do
+      subject.call
+      expect(result.external_id).to eq external_id
     end
   end
 end

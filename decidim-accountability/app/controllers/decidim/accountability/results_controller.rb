@@ -9,10 +9,6 @@ module Decidim
 
       helper_method :results, :result, :stats_calculator, :first_class_categories, :category, :progress_calculator, :count_calculator, :current_scope
 
-      def home
-        redirect_to url_for(filter: { scope_id: "global", category_id: category.try(:id) }) and return if params[:filter].blank?
-      end
-
       private
 
       def results

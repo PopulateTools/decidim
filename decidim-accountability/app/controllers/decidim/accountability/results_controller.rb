@@ -17,7 +17,7 @@ module Decidim
 
       def results
         parent_id = params[:parent_id].presence
-        @results ||= search.results.where(parent_id: parent_id).page(params[:page]).per(12)
+        @results ||= search.results.where(parent_id: parent_id).page(params[:page]).per(12).sorted
       end
 
       def result

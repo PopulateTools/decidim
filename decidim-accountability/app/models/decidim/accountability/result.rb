@@ -24,6 +24,8 @@ module Decidim
 
       after_save :update_parent_progress, if: -> { parent_id.present? }
 
+      scope :sorted, -> { order(position: :asc) }
+
       def update_parent_progress
         return if parent.blank?
 

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "base64"
+
 module Decidim
   # This is the base class for authorization handlers, all implementations
   # should inherit from it.
@@ -12,6 +14,9 @@ module Decidim
   #
   # It also sets two default attributes, `user` and `handler_name`.
   class AuthorizationHandler < Form
+    include Decidim::Core::Engine.routes.url_helpers
+    include Decidim::Verifications::Engine.routes.url_helpers
+
     # The user that is trying to authorize, it's initialized with the
     # `current_user` from the controller.
     attribute :user, Decidim::User
@@ -124,9 +129,32 @@ module Decidim
     def uniqueness
       return true if unique_id.nil? || duplicates.none?
 
-      errors.add(:base, I18n.t("decidim.authorization_handlers.errors.duplicate_authorization"))
+      duplicate_email_segments = duplicates.first.user.email.split("@")
+      segment_1 = duplicate_email_segments.first
+      segment_2 = duplicate_email_segments.second
+
+      segment_1 = "#{segment_1[0..2]}#{'*' * (segment_1.length - 3)}"
+      segment_2 = "#{'*' * (segment_2.length - 3)}#{segment_2[-3..]}"
+
+      obfuscated_email = "#{segment_1}@#{segment_2}"
+
+      errors.add(
+        :base,
+        I18n.t(
+          "decidim.authorization_handlers.errors.duplicate_authorization_html",
+          email: obfuscated_email,
+          reset_authorization_link: reset_authorization_link(duplicates.first),
+          reset_password_link: new_user_password_path
+        ).html_safe
+      )
 
       false
+    end
+
+    def reset_authorization_link(authorization)
+      authorization_path(id: Base64.strict_encode64(
+        AttributeEncryptor.encrypt(authorization.id)
+      ))
     end
   end
 end

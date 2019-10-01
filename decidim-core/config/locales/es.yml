@@ -204,7 +204,16 @@ es:
       dummy_authorization_workflow:
         name: Flujo de trabajo de autorización de ejemplo
       errors:
-        duplicate_authorization: Ya se ha autorizado a una participante con los mismos datos.
+        duplicate_authorization_html: "
+          <p>Ya se ha verificado un usuario con este documento de identificación. Esta asociada a la cuenta con correo-e %{email}.</p>
+          <p>Tienes dos opciones:</p>
+          <p><b>Si tienes acceso</b> a esa cuenta de correo, trata de hacer login. Puedes <a href='%{reset_password_link}'>recuperar la contraseña</a> si no la recuerdas.
+          Con esa cuenta ya tienes la verificación lista y podrás seguir participando.</p>
+          <p><b>Si no puedes acceder</b> a esa cuenta, puedes eliminar la verificación y asociarla a la cuenta con la que ahora estás logueado.</p>
+          <ul>
+            <li><b>Precaución</b>: Esta acción no es reversible, y si tenías participaciones en algún proceso activo con esa cuenta, se perderán.</li>
+            <li>Si estás seguro que quieres eliminar esa verificación y asociarlo a esta cuenta, <b><a href='%{reset_authorization_link}' data-method='delete'>haz click aquí</a></b>.</li>
+          </ul>"
       expired_at: Caducado el %{timestamp}
       expires_at: Caduca el %{timestamp}
       foo_authorization:

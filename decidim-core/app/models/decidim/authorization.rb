@@ -36,6 +36,17 @@ module Decidim
       authorization.grant!
     end
 
+    def self.replace_authorization!(old_authorization, new_user)
+      authorization = Authorization.find_or_initialize_by(
+        old_authorization.attributes
+                         .except("id", "decidim_user_id", "created_at", "updated_at", "granted_at")
+                         .merge(user: new_user)
+      )
+
+      old_authorization.destroy!
+      authorization.grant!
+    end
+
     def grant!
       remove_verification_attachment!
 

@@ -8,7 +8,7 @@ module Decidim
 
       routes do
         authenticate(:user) do
-          resources :authorizations, only: [:new, :create, :index] do
+          resources :authorizations, only: [:new, :create, :index, :destroy] do
             collection do
               get :first_login
             end

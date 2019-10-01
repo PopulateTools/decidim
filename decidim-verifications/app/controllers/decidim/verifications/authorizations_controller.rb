@@ -46,6 +46,22 @@ module Decidim
         end
       end
 
+      def destroy
+        authorization_id = AttributeEncryptor.decrypt(Base64.strict_decode64(params[:id]))
+
+        OverwriteAuthorization.call(authorization_id, current_user) do
+          on(:ok) do
+            flash[:notice] = t("authorizations.create.success", scope: "decidim.verifications")
+            redirect_to params[:redirect_url] || authorizations_path
+          end
+
+          on(:invalid) do
+            flash[:alert] = t("authorizations.create.error", scope: "decidim.verifications")
+            render action: :new
+          end
+        end
+      end
+
       protected
 
       def handler

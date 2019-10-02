@@ -1,0 +1,15 @@
+<h2 class="process-title-summary">
+  <%= t(".title") %>
+</h2>
+
+<%= decidim_form_for(@form, url: delete_authorizations_path, html: { class: "form delete_verifications" }) do |f| %>
+  <div class="card">
+    <div class="card-section">
+      <%= render partial: "form", object: f %>
+    </div>
+  </div>
+
+  <div class="button--double form-general-submit">
+    <%= f.submit t(".search"), data: { confirm: t(".confirm_destroy") } %>
+  </div>
+<% end %>

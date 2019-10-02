@@ -11,6 +11,9 @@ module Decidim
   # depending on the response it allows the creation of the authorization or
   # not.
   class Authorization < ApplicationRecord
+    include Decidim::Traceable
+    include Decidim::Loggable
+
     mount_uploader :verification_attachment, Decidim::Verifications::AttachmentUploader
 
     belongs_to :user, foreign_key: "decidim_user_id", class_name: "Decidim::User"
@@ -21,6 +24,10 @@ module Decidim
     validates :verification_attachment, absence: true, if: :granted?
 
     validate :active_handler?
+
+    def self.log_presenter_class_for(_log)
+      Decidim::AdminLog::AuthorizationPresenter
+    end
 
     def self.create_or_update_from(handler)
       authorization = find_or_initialize_by(

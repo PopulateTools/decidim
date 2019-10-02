@@ -212,7 +212,7 @@ ca:
           <p><b>Si no puedes acceder</b> a esa cuenta, puedes eliminar la verificación y asociarla a la cuenta con la que ahora estás logueado.</p>
           <ul>
             <li><b>Precaución</b>: Esta acción no es reversible, y si tenías participaciones en algún proceso activo con esa cuenta, se perderán.</li>
-            <li>Si estás seguro que quieres eliminar esa verificación y asociarlo a esta cuenta, <b><a href='%{reset_authorization_link}'>haz click aquí</a></b>.</li>
+            <li>Si estás seguro que quieres eliminar esa verificación y asociarlo a esta cuenta, <b><a href='%{reset_authorization_link}' data-method='delete'>haz click aquí</a></b>.</li>
           </ul>"
       expired_at: Vençut el %{timestamp}
       expires_at: Venç en %{timestamp}

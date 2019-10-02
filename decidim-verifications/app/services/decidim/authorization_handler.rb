@@ -14,9 +14,6 @@ module Decidim
   #
   # It also sets two default attributes, `user` and `handler_name`.
   class AuthorizationHandler < Form
-    include Decidim::Core::Engine.routes.url_helpers
-    include Decidim::Verifications::Engine.routes.url_helpers
-
     # The user that is trying to authorize, it's initialized with the
     # `current_user` from the controller.
     attribute :user, Decidim::User
@@ -144,7 +141,7 @@ module Decidim
           "decidim.authorization_handlers.errors.duplicate_authorization_html",
           email: obfuscated_email,
           reset_authorization_link: reset_authorization_link(duplicates.first),
-          reset_password_link: new_user_password_path
+          reset_password_link: decidim.new_user_password_path
         ).html_safe
       )
 
@@ -152,9 +149,17 @@ module Decidim
     end
 
     def reset_authorization_link(authorization)
-      authorization_path(id: Base64.strict_encode64(
+      decidim_verifications.authorization_path(id: Base64.strict_encode64(
         AttributeEncryptor.encrypt(authorization.id)
       ))
+    end
+
+    def decidim
+      Decidim::Core::Engine.routes.url_helpers
+    end
+
+    def decidim_verifications
+      Decidim::Verifications::Engine.routes.url_helpers
     end
   end
 end

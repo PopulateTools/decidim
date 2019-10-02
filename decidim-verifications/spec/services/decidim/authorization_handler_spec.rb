@@ -4,8 +4,13 @@ require "spec_helper"
 
 module Decidim
   describe AuthorizationHandler do
+    let(:organization) { create(:organization) }
+    let(:user) { create(:user, organization: organization) }
+
     let(:handler) { described_class.new(params) }
-    let(:params) { {} }
+    let(:params) { { user: user, organization: organization } }
+
+    let(:action_log) { ActionLog.last }
 
     describe "form_attributes" do
       subject { handler.form_attributes }
@@ -28,9 +33,6 @@ module Decidim
 
     describe "user" do
       subject { handler.user }
-
-      let(:user) { instance_double(Decidim::User) }
-      let(:params) { { user: user } }
 
       it { is_expected.to eq(user) }
     end
@@ -68,6 +70,30 @@ module Decidim
             it { is_expected.to be_kind_of(described_class) }
           end
         end
+      end
+    end
+
+    describe "log_successful_authorization" do
+      before { handler.log_successful_authorization }
+
+      it "creates a log entry" do
+        expect(action_log.action).to eq("create_authorization_success")
+        expect(action_log.user).to eq(user)
+        expect(action_log.resource).to eq(user)
+
+        expect(action_log.extra["handler_name"]).to eq("authorization_handler")
+      end
+    end
+
+    describe "log_failed_authorization" do
+      before { handler.log_failed_authorization }
+
+      it "creates a log entry" do
+        expect(action_log.action).to eq("create_authorization_error")
+        expect(action_log.user).to eq(user)
+        expect(action_log.resource).to eq(user)
+
+        expect(action_log.extra["handler_name"]).to eq("authorization_handler")
       end
     end
   end

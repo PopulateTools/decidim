@@ -213,6 +213,16 @@ en:
         update:
           error: There was a problem updating this attachment.
           success: Attachment updated successfully.
+      authorizations:
+        delete:
+          not_found: No authorizations found for this verification data.
+          success: Authorization deleted for verification data.
+        form:
+          authorization_method: Authorization method
+        index:
+          confirm_destroy: If there is an authorization associated with this data, it will be deleted. Continue?
+          search: Search and delete
+          title: Search authorization
       autocomplete:
         no_results: No results found
         search_prompt: Type at least three characters to search
@@ -332,6 +342,7 @@ en:
         appearance: Appearance
         area_types: Area types
         areas: Areas
+        authorizations: Authorizations
         configuration: Configuration
         dashboard: Dashboard
         help_sections: Help sections

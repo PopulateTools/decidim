@@ -37,6 +37,11 @@
           <% end %>
         </ul>
       </li>
+      <% if allowed_to? :index, :authorizations %>
+        <li <% if is_active_link?(decidim_admin.authorizations_path) %> class="is-active" <% end %>>
+          <%= link_to t("menu.authorizations", scope: "decidim.admin"), decidim_admin.authorizations_path %>
+        </li>
+      <% end %>
     </ul>
   </div>
 <% end %>

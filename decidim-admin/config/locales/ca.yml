@@ -208,6 +208,16 @@ ca:
         update:
           error: S'ha produït un error en actualitzar aquest adjunt.
           success: Adjunt actualitzat correctament.
+      authorizations:
+        delete:
+          not_found: No s'han trobat autoritzacions associades a les dades introduïdes.
+          success: Autorització eliminada per les dades de verificació introduïts.
+        form:
+          authorization_method: Mètode d'autorització
+        index:
+          confirm_destroy: Si hi ha una autorització associada a aquestes dades serà eliminada. Continuar?
+          search: Cercar i eliminar
+          title: Cercar autorització
       autocomplete:
         no_results: No s'han trobat resultats
         search_prompt: Escriu com a mínim tres caràcters per cercar
@@ -328,6 +338,7 @@ ca:
         appearance: Aparença
         area_types: Tipus d'àrees
         areas: Àrees
+        authorizations: Autoritzacions
         configuration: Configuració
         dashboard: Tauler de control
         help_sections: Seccions d'ajuda

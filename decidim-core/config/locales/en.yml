@@ -88,6 +88,8 @@ en:
         create: "%{user_name} created the %{resource_name} area"
         delete: "%{user_name} deleted the %{resource_name} area"
         update: "%{user_name} updated the %{resource_name} area"
+      authorization:
+        delete: "%{user_name} deleted an authorization of %{recipient_name}"
       component:
         create: "%{user_name} added the %{resource_name} component to the %{space_name} space"
         delete: "%{user_name} removed the %{resource_name} component from the %{space_name} space"
@@ -208,7 +210,9 @@ en:
       dummy_authorization_workflow:
         name: Dummy authorization workflow
       errors:
-        duplicate_authorization: A participant is already authorized with the same data.
+        duplicate:
+          managed_user_html: " <p>A user has already been verified with this identification document. It is associated with a managed account with name %{name}.</p> <p>Contact an administrator to promote the original account and participate.</p> "
+          regular_user_html: " <p>A user has already been verified with this identification document. It is associated to the account with email %{email}.</p> <p>Try to login with that account. If you do not remember the password you can <a href='%{reset_password_link}'>recover it</a> to continue participating.</p> "
       expired_at: Expired at %{timestamp}
       expires_at: Expires at %{timestamp}
       foo_authorization:

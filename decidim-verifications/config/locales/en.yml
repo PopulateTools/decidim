@@ -32,6 +32,8 @@ en:
       organization:
         update_id_documents_config: "%{user_name} updated the Identity Documents verification configuration"
       user:
+        create_authorization_error: "%{user_name} could not authorize his/her account"
+        create_authorization_success: "%{user_name} has authorized his/her account"
         grant_id_documents_offline_verification: "%{user_name} verified %{resource_name} using an offline Identity Documents verification"
     authorization_handlers:
       admin:

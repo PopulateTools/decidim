@@ -18,9 +18,14 @@ module Decidim
       #
       # Returns nothing.
       def call
-        return broadcast(:invalid) unless handler.valid?
+        unless handler.valid?
+          handler.log_failed_authorization
+          return broadcast(:invalid)
+        end
 
         Authorization.create_or_update_from(handler)
+
+        handler.log_successful_authorization
 
         broadcast(:ok)
       end

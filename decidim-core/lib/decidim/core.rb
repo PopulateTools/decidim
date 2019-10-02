@@ -56,6 +56,7 @@ module Decidim
   autoload :MetricOperation, "decidim/metric_operation"
   autoload :MetricOperationManifest, "decidim/metric_operation_manifest"
   autoload :AttributeEncryptor, "decidim/attribute_encryptor"
+  autoload :AttributeObfuscator, "decidim/attribute_obfuscator"
   autoload :NewsletterEncryptor, "decidim/newsletter_encryptor"
   autoload :NewsletterParticipant, "decidim/newsletter_participant"
   autoload :Searchable, "decidim/searchable"

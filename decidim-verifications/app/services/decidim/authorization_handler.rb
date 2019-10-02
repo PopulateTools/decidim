@@ -124,9 +124,31 @@ module Decidim
     def uniqueness
       return true if unique_id.nil? || duplicates.none?
 
-      errors.add(:base, I18n.t("decidim.authorization_handlers.errors.duplicate_authorization"))
+      errors.add(
+        :base,
+        duplicated_authorization_error_message(duplicates.first.user).html_safe
+      )
 
       false
+    end
+
+    def duplicated_authorization_error_message(other_user)
+      if other_user.managed?
+        I18n.t(
+          "decidim.authorization_handlers.errors.duplicate.managed_user_html",
+          name: Decidim::AttributeObfuscator.name_hint(other_user.name)
+        )
+      else
+        I18n.t(
+          "decidim.authorization_handlers.errors.duplicate.regular_user_html",
+          email: Decidim::AttributeObfuscator.email_hint(other_user.email),
+          reset_password_link: decidim.new_user_password_path
+        )
+      end
+    end
+
+    def decidim
+      Decidim::Core::Engine.routes.url_helpers
     end
   end
 end

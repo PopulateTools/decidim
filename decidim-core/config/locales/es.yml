@@ -87,6 +87,8 @@ es:
         create: "%{user_name} creó el área %{resource_name}"
         delete: "%{user_name} eliminó el área %{resource_name}"
         update: "%{user_name} actualizó el área %{resource_name}"
+      authorization:
+        delete: "%{user_name} eliminó una autorización de %{recipient_name}"
       component:
         create: "%{user_name} agregó el componente %{resource_name} al espacio %{space_name}"
         delete: "%{user_name} eliminó el componente %{resource_name} del espacio %{space_name}"
@@ -204,7 +206,15 @@ es:
       dummy_authorization_workflow:
         name: Flujo de trabajo de autorización de ejemplo
       errors:
-        duplicate_authorization: Ya se ha autorizado a una participante con los mismos datos.
+        duplicate:
+          managed_user_html: "
+            <p>Ya se ha verificado un usuario con este documento de identificación. Esta asociada a una cuenta administrada con nombre %{name}.</p>
+            <p>Ponte en contacto con un administrador para promocionar la cuenta original y poder participar.</p>
+            "
+          regular_user_html: "
+            <p>Ya se ha verificado un usuario con este documento de identificación. Esta asociada a la cuenta con correo-e %{email}.</p>
+            <p>Trata de hacer login con esa cuenta. Si no recuerdas la contraseña puedes <a href='%{reset_password_link}'>recuperarla</a> para seguir participando.</p>
+            "
       expired_at: Caducado el %{timestamp}
       expires_at: Caduca el %{timestamp}
       foo_authorization:

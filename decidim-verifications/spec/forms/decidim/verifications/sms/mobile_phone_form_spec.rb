@@ -28,7 +28,7 @@ module Decidim::Verifications::Sms
         create(:authorization, name: "sms", user: other_user, unique_id: subject.unique_id)
 
         expect(subject).to be_invalid
-        expect(subject.errors[:base]).to eq(["A participant is already authorized with the same data."])
+        expect(subject.errors[:base].first).to include("A user has already been verified with this identification document.")
       end
     end
 

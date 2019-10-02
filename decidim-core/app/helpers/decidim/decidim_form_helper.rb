@@ -187,7 +187,7 @@ module Decidim
       return unless record.respond_to?(:errors)
       return unless record.errors[:base].any?
 
-      alert_box(record.errors.full_messages_for(:base).join(","), "alert", false)
+      alert_box(record.errors.full_messages_for(:base).join(",").html_safe, "alert", false)
     end
 
     def foundation_datepicker_locale_tag

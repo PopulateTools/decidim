@@ -211,6 +211,16 @@ es:
       autocomplete:
         no_results: No se han encontrado resultados
         search_prompt: Escriba al menos tres caracteres para buscar
+      authorizations:
+        delete:
+          not_found: No se han hallado autorizaciones asociadas a los datos introducidosNo authorizations found for this verification data.
+          success: Autorización eliminada para los datos de verificación introducidos.
+        form:
+          authorization_method: Método de autorización
+        index:
+          confirm_destroy: Si existe una autorización asociada a estos datos será eliminada. ¿Continuar?
+          search: Buscar y eliminar
+          title: Buscar autorización
       categories:
         create:
           error: Se ha producido un error al crear esta categoría.
@@ -328,6 +338,7 @@ es:
         appearance: Apariencia
         area_types: Tipos de área
         areas: Áreas
+        authorizations: Autorizaciones
         configuration: Configuración
         dashboard: Panel de control
         help_sections: Secciones de ayuda

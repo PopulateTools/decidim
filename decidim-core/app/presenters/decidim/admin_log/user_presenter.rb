@@ -58,6 +58,15 @@ module Decidim
         ).changeset
       end
 
+      def i18n_labels_scope
+        case action
+        when "create_authorization_success", "create_authorization_error"
+          "decidim.verifications.authorizations.error_log"
+        else
+          super
+        end
+      end
+
       # Show the diff if the action is officialization or authorization.
       def has_diff?
         %w(officialize unofficialize create_authorization_success create_authorization_error).include?(action)

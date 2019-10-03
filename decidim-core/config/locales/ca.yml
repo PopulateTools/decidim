@@ -88,7 +88,7 @@ ca:
         delete: "%{user_name} ha eliminat l'àrea %{resource_name}"
         update: "%{user_name} ha actualitzat l'àrea %{resource_name}"
       authorization:
-        delete: "%{user_name} va esborrar una autorització de %{recipient_name}"
+        delete: "%{user_name} ha eliminat una autorització de %{recipient_name}"
       component:
         create: "%{user_name} ha afegit el component %{resource_name} a l'espai %{space_name}"
         delete: "%{user_name} ha eliminat el component %{resource_name} de l'espai %{space_name}"

@@ -69,6 +69,12 @@ Decidim::Admin::Engine.routes.draw do
       end
     end
 
+    resources :authorizations, only: [:index] do
+      collection do
+        post :delete
+      end
+    end
+
     resource :help_sections, only: [:show, :update]
 
     resources :oauth_applications

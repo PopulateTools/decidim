@@ -328,6 +328,7 @@ ca:
         appearance: Aparença
         area_types: Tipus d'àrees
         areas: Àrees
+        authorizations: Autoritzacions
         configuration: Configuració
         dashboard: Tauler de control
         help_sections: Seccions d'ajuda

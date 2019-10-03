@@ -25,6 +25,10 @@ module Decidim
 
     validate :active_handler?
 
+    def self.log_presenter_class_for(_log)
+      Decidim::AdminLog::AuthorizationPresenter
+    end
+
     def self.create_or_update_from(handler)
       authorization = find_or_initialize_by(
         user: handler.user,

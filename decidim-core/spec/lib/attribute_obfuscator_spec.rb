@@ -21,6 +21,12 @@ module Decidim
         it { is_expected.to be_nil }
       end
 
+      context "for very short emails" do
+        let(:email) { "ab@email.com" }
+
+        it { is_expected.to eq("**@email.com") }
+      end
+
       context "for short emails" do
         let(:email) { "peter@email.com" }
 
@@ -47,6 +53,12 @@ module Decidim
         let(:name) { "" }
 
         it { is_expected.to be_nil }
+      end
+
+      context "for very short names" do
+        let(:name) { "Al" }
+
+        it { is_expected.to eq("**") }
       end
 
       context "for short names" do

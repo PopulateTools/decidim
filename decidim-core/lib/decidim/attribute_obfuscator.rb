@@ -6,33 +6,44 @@ module Decidim
       return nil unless full_email.present? && full_email.include?("@")
 
       segments = full_email.split("@")
-      segment_1 = segments.first
-      segment_2 = segments.second
+      local_part = segments.first
 
-      segment_1 = if segment_1.length < 4
-                    "#{segment_1.first}#{'*' * (segment_1.length - 1)}"
-                  else
-                    "#{segment_1[0..2]}#{'*' * (segment_1.length - 3)}"
-                  end
-      segment_2 = "#{'*' * (segment_2.length - 3)}#{segment_2[-3..]}"
+      obfuscated_local_part = if local_part.length < 6
+                                obfuscate(1, 1, local_part)
+                              elsif local_part.length < 10
+                                obfuscate(2, 2, local_part)
+                              else
+                                obfuscate(3, 3, local_part)
+                              end
 
-      "#{segment_1}@#{segment_2}"
+      "#{obfuscated_local_part}@#{segments.second}"
     end
 
     def self.name_hint(name)
-      return nil unless name.present?
-      return "#{name.first}#{'*' * (name.length - 2)}#{name.last}" unless name.length > 6
+      name = name.to_s
 
-      "#{name[0..2]}#{'*' * (name.length - 6)}#{name[-3..]}"
+      return nil unless name.present?
+      return obfuscate(1, 1, name) if name.length < 5
+
+      obfuscate(3, 3, name)
     end
 
-    def self.census_attribute_hint(value)
+    # This is the default obfuscator for the authorizations log, so
+    # let's be conservative with obfuscation
+    def self.secret_attribute_hint(value)
       value = value.to_s
 
       return nil unless value.present?
-      return value unless value.length > 3
+      return "#{'*' * value.length}" if value.length < 5
 
-      "#{value.first}#{'*' * (value.length - 4)}#{value[-3..]}"
+      "#{value.first}#{'*' * (value.length - 2)}#{value.last}"
     end
+
+    def self.obfuscate(plain_beggining_length, plan_ending_length, value)
+      obfuscated_length = value.length - plain_beggining_length - plan_ending_length
+
+      "#{value[0..plain_beggining_length - 1]}#{'*' * obfuscated_length}#{value[-plan_ending_length..]}"
+    end
+    private_class_method :obfuscate
   end
 end

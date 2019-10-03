@@ -16,7 +16,7 @@ module Decidim
 
       def action_string
         case action
-        when "grant_id_documents_offline_verification", "invite", "officialize", "remove_from_admin", "unofficialize"
+        when "grant_id_documents_offline_verification", "invite", "officialize", "remove_from_admin", "unofficialize", "create_authorization_success", "create_authorization_error"
           "decidim.admin_log.user.#{action}"
         else
           super
@@ -41,18 +41,40 @@ module Decidim
         action_log.extra.dig("extra", "officialized_user_badge_previous") || Hash.new("")
       end
 
-      # We fake the changeset for officialization actions.
+      # Fake the changeset for officialization and authorization actions.
       def changeset
+        case action
+        when "create_authorization_success", "create_authorization_error"
+          original_changeset, fields_mapping = authorization_changeset
+        else
+          original_changeset = { badge: [previous_user_badge, user_badge] }
+          fields_mapping = { badge: :i18n }
+        end
+
         Decidim::Log::DiffChangesetCalculator.new(
-          { badge: [previous_user_badge, user_badge] },
-          { badge: :i18n },
+          original_changeset,
+          fields_mapping,
           i18n_labels_scope
         ).changeset
       end
 
-      # If the action is officialization, then we want to show the diff
+      # Show the diff if the action is officialization or authorization.
       def has_diff?
-        %w(officialize unofficialize).include?(action)
+        %w(officialize unofficialize create_authorization_success create_authorization_error).include?(action)
+      end
+
+      def authorization_changeset
+        changeset_list = action_log.extra.symbolize_keys
+                                   .except(:component, :participatory_space, :resource, :user) # Don't display extra_data added by ActionLogger
+                                   .map { |k, v| [k, [nil, v]] }
+        original_changeset = Hash[changeset_list]
+        fields_mapping = Hash[original_changeset.keys.map { |k| [k, :string] }]
+
+        [original_changeset, fields_mapping]
+      end
+
+      def show_previous_value_in_diff?
+        super && %w(create_authorization_success create_authorization_error).exclude?(action)
       end
     end
   end

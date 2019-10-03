@@ -31,6 +31,8 @@ ca:
       organization:
         update_id_documents_config: "%{user_name} ha actualitzat la configuració de verificació mitjançant documents d'identitat"
       user:
+        create_authorization_success: "%{user_name} ha autoritzat seu compte"
+        create_authorization_error: "%{user_name} no ha pogut autoritzar seu compte"
         grant_id_documents_offline_verification: "%{user_name} ha verificat %{resource_name} utilitzant la verificació presencial mitjançant documents d'identitat"
     authorization_handlers:
       admin:

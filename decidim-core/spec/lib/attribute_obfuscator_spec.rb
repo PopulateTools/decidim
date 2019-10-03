@@ -9,18 +9,6 @@ module Decidim
     describe "#email_hint" do
       subject { obfuscator.email_hint(email) }
 
-      context "for regular emails" do
-        let(:email) { "name-surname@email.com" }
-
-        it { is_expected.to eq("nam*********@******com") }
-      end
-
-      context "for short emails" do
-        let(:email) { "foo@bar.es" }
-
-        it { is_expected.to eq("f**@***.es") }
-      end
-
       context "for invalid emails" do
         let(:email) { "invalid" }
 
@@ -31,6 +19,24 @@ module Decidim
         let(:email) { "" }
 
         it { is_expected.to be_nil }
+      end
+
+      context "for short emails" do
+        let(:email) { "peter@email.com" }
+
+        it { is_expected.to eq("p***r@email.com") }
+      end
+
+      context "for medium emails" do
+        let(:email) { "stephen@email.com" }
+
+        it { is_expected.to eq("st***en@email.com") }
+      end
+
+      context "for long emails" do
+        let(:email) { "name-surname@email.com" }
+
+        it { is_expected.to eq("nam******ame@email.com") }
       end
     end
 
@@ -56,8 +62,8 @@ module Decidim
       end
     end
 
-    describe "#census_attribute_hint" do
-      subject { obfuscator.census_attribute_hint(attribute_value) }
+    describe "#secret_attribute_hint" do
+      subject { obfuscator.secret_attribute_hint(attribute_value) }
 
       context "for blank attributes" do
         let(:attribute_value) { "" }
@@ -68,13 +74,13 @@ module Decidim
       context "for short attributes" do
         let(:attribute_value) { "abc" }
 
-        it { is_expected.to eq("abc") }
+        it { is_expected.to eq("***") }
       end
 
       context "for long attributes" do
-        let(:attribute_value) { "12345678A" }
+        let(:attribute_value) { "12345678X" }
 
-        it { is_expected.to eq("1*****78A") }
+        it { is_expected.to eq("1*******X") }
       end
     end
   end

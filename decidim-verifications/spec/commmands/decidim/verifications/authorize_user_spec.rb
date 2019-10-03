@@ -25,6 +25,12 @@ module Decidim::Verifications
       it "is not valid" do
         expect { subject.call }.to broadcast(:invalid)
       end
+
+      it "logs the authorization attempt" do
+        expect_any_instance_of(handler.class).to receive(:log_failed_authorization)
+
+        subject.call
+      end
     end
 
     context "when everything is ok" do
@@ -42,6 +48,12 @@ module Decidim::Verifications
         subject.call
 
         expect(authorizations.first).to be_granted
+      end
+
+      it "logs the authorization" do
+        expect_any_instance_of(handler.class).to receive(:log_successful_authorization)
+
+        subject.call
       end
     end
 

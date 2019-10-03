@@ -31,6 +31,8 @@ es:
       organization:
         update_id_documents_config: "%{user_name} ha actualizado la configuración de verificación mediante documentos de identidad"
       user:
+        create_authorization_success: "%{user_name} ha autorizado su cuenta"
+        create_authorization_error: "%{user_name} no ha podido autorizar su cuenta"
         grant_id_documents_offline_verification: "%{user_name} ha verificado %{resource_name} utilizando una verificación presencial mediante documentos de identidad"
     authorization_handlers:
       admin:

@@ -215,6 +215,8 @@ es:
         delete:
           not_found: No se han hallado autorizaciones asociadas a los datos introducidosNo authorizations found for this verification data.
           success: Autorización eliminada para los datos de verificación introducidos.
+        form:
+          authorization_method: Método de autorización
         index:
           confirm_destroy: Si existe una autorización asociada a estos datos será eliminada. ¿Continuar?
           search: Buscar y eliminar

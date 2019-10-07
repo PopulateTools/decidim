@@ -213,6 +213,8 @@ en:
         delete:
           not_found: No authorizations found for this verification data.
           success: Authorization deleted for verification data.
+        form:
+          authorization_method: Authorization method
         index:
           confirm_destroy: If there is an authorization associated with this data, it will be deleted. Continue?
           search: Search and delete

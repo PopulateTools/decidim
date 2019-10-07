@@ -212,6 +212,8 @@ ca:
         delete:
           not_found: No s'han trobat autoritzacions associades a les dades introduïdes.
           success: Autorització eliminada per les dades de verificació introduïts.
+        form:
+          authorization_method: Mètode d'autorització
         index:
           confirm_destroy: Si hi ha una autorització associada a aquestes dades serà eliminada. Continuar?
           search: Cercar i eliminar

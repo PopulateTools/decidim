@@ -27,7 +27,9 @@ module Decidim::Verifications
       end
 
       it "logs the authorization attempt" do
+        # rubocop:disable RSpec/AnyInstance
         expect_any_instance_of(handler.class).to receive(:log_failed_authorization)
+        # rubocop:enable RSpec/AnyInstance
 
         subject.call
       end
@@ -51,7 +53,9 @@ module Decidim::Verifications
       end
 
       it "logs the authorization" do
+        # rubocop:disable RSpec/AnyInstance
         expect_any_instance_of(handler.class).to receive(:log_successful_authorization)
+        # rubocop:enable RSpec/AnyInstance
 
         subject.call
       end

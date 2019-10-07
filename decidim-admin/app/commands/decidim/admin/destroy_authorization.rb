@@ -20,7 +20,7 @@ module Decidim
       #
       # Returns nothing.
       def call
-        return broadcast(:not_found) unless authorization.present?
+        return broadcast(:not_found) if authorization.blank?
 
         destroy_authorization
 

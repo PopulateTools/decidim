@@ -77,13 +77,20 @@ module Decidim
                                    .except(:component, :participatory_space, :resource, :user) # Don't display extra_data added by ActionLogger
                                    .map { |k, v| [k, [nil, v]] }
         original_changeset = Hash[changeset_list]
-        fields_mapping = Hash[original_changeset.keys.map { |k| [k, :string] }]
+
+        fields_mapping = Hash[original_changeset.map do |k, v|
+          [k, authorization_changeset_attribute_type(v.second)]
+        end]
 
         [original_changeset, fields_mapping]
       end
 
       def show_previous_value_in_diff?
         super && %w(create_authorization_success create_authorization_error).exclude?(action)
+      end
+
+      def authorization_changeset_attribute_type(value)
+        [true, false].include?(value) ? :boolean : :string
       end
     end
   end

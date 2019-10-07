@@ -17,7 +17,7 @@ module Decidim
       def action_string
         case action
         when "delete"
-            "decidim.admin_log.authorization.#{action}"
+          "decidim.admin_log.authorization.#{action}"
         else
           super
         end
@@ -38,7 +38,7 @@ module Decidim
       end
 
       def recipient
-        Decidim::User.find_by_id(recipient_data["id"])
+        Decidim::User.find_by(id: recipient_data["id"])
       end
     end
   end

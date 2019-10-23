@@ -180,6 +180,7 @@ ignore_unused:
   - decidim.conferences.models.conference_registration.fields.states.*
   - decidim.proposals.admin.participatory_texts.sections.*
   - decidim.gamification.badges.*
+  - decidim.stats.participatory_processes.*
   - decidim.surveys.surveys.answer.*
   - decidim.surveys.admin.surveys.update.*
   - decidim.groups.roles.*

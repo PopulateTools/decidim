@@ -96,6 +96,7 @@ es:
           private_users: Participantes privadas
           process_admins: Administradoras del proceso
           steps: Fases del proceso
+          stats: Estadísticas
       models:
         participatory_process:
           fields:
@@ -158,6 +159,9 @@ es:
         create:
           error: Se ha producido un error al activar esta fase del proceso participativo.
           success: La fase del proceso participativo se ha activado correctamente.
+      participatory_process_stats:
+        index:
+          stats_title: Estadísticas del proceso
       participatory_process_steps:
         create:
           error: Se ha producido un error al crear una nueva fase del proceso participativo.
@@ -273,6 +277,17 @@ es:
         description: Número de procesos participativos en esta organización
         object: procesos participativos
         title: Procesos participativos
+    stats:
+      participatory_processes:
+        total_registered: Usuarios registrados
+        total_verified: Usuarios verificados
+        active_users: Usuario activos en el proceso
+        voting_users: Usuario que han votado
+        not_voting_users: Usuario que no han votado
+        metric: Métrica
+        value: Valor
+        total_percentage: "% de usuario totales"
+        active_percentage: "% de usuarios activos"
     participatory_process_groups:
       show:
         group_participatory_processes:

@@ -96,6 +96,7 @@ ca:
           private_users: Participants privades
           process_admins: Administradores del procés
           steps: Fases del procés
+          stats: Estadístiques
       models:
         participatory_process:
           fields:
@@ -158,6 +159,9 @@ ca:
         create:
           error: S'ha produït un error en activar aquesta fase del procés participatiu.
           success: La fase del procés participatiu s'ha activat correctament.
+      participatory_process_stats:
+        index:
+          stats_title: Estadístiques del procés
       participatory_process_steps:
         create:
           error: S'ha produït un error en crear una nova fase del procés participatiu.
@@ -273,6 +277,17 @@ ca:
         description: Nombre de processos participatius d'aquesta organització
         object: processos participatius
         title: Processos participatius
+    stats:
+      participatory_processes:
+        total_registered: Usuaris registrats
+        total_verified: Usuaris verificats
+        active_users: Usuaris actius en el procés
+        voting_users: Usuaris que han votat
+        not_voting_users: Usuaris que no han votat
+        metric: Mètrica
+        value: Valor
+        total_percentage: "% d'usuaris totals"
+        active_percentage: "% d'usuaris actius"
     participatory_process_groups:
       show:
         group_participatory_processes:

@@ -96,5 +96,10 @@ module Decidim
     def open_data_file_path
       "#{host}-open-data.zip"
     end
+
+    def authorizations
+      Decidim::Authorization.joins("INNER JOIN #{Decidim::User.table_name} ON decidim_user_id = decidim_users.id")
+                            .where("decidim_organization_id = ?", id)
+    end
   end
 end

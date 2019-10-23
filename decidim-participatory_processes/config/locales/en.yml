@@ -96,6 +96,7 @@ en:
           moderations: Moderations
           private_users: Private participants
           process_admins: Process admins
+          stats: Statistics
           steps: Phases
       models:
         participatory_process:
@@ -154,6 +155,9 @@ en:
         destroy:
           error: There was a problem unpublishing this participatory process.
           success: Participatory process successfully unpublished.
+      participatory_process_stats:
+        index:
+          stats_title: Process statistics
       participatory_process_step_activations:
         create:
           error: There was a problem activating this participatory process phase.
@@ -375,6 +379,17 @@ en:
         surveys_count: Surveys
         users_count: Participants
         votes_count: Supports
+    stats:
+      participatory_processes:
+        active_percentage: "% of active users"
+        active_users: Active users in process
+        metric: Metric
+        not_voting_users: Users that have not voted
+        total_percentage: "% of total users"
+        total_registered: Total registered users
+        total_verified: Total verified users
+        value: Value
+        voting_users: Users that have voted
   layouts:
     decidim:
       participatory_process_groups:

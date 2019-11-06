@@ -79,7 +79,7 @@ jobs:
     steps:
       - checkout
       - *restore_ruby_cache
-      - run: bundle install
+      - run: gem install bundler && bundle install
       - *save_ruby_cache
       - *wait_for_db
       - run:

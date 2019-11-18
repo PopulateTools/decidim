@@ -255,7 +255,7 @@ es:
             "
           regular_user_html: "
             <p>Ya se ha verificado un usuario con este documento de identificación. Esta asociada a la cuenta con correo-e %{email}.</p>
-            <p>Trata de hacer login con esa cuenta. Si no recuerdas la contraseña puedes <a href='%{reset_password_link}'>recuperarla</a> para seguir participando.</p>
+            <p>Trata de hacer login con esa cuenta. Si no recuerdas la contraseña, <a href='%{logout_link}'>haz logout</a> y pincha en recuperar contraseña en la pantalla de iniciar sesión.</p>
             "
       expired_at: Caducado el %{timestamp}
       expires_at: Caduca el %{timestamp}

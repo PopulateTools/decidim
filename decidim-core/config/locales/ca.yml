@@ -255,7 +255,7 @@ ca:
             "
           regular_user_html: "
             <p>Ja s'ha verificat un usuari amb aquest document d'identificació. Està associada al compte amb correu-e %{email}.</p>
-            <p>Tracta d'entrar com a usuari amb aquest compte. Si no recordes la contrasenya pots <a href='%{reset_password_link}'>recuperar-la</a> per seguir participant.</p>
+            <p>Tracta d'entrar com a usuari amb aquest compte. Si no recordes la contrasenya, <a href='%{logout_link}'>fes logout</a> i punxa a recuperar contrasenya a la pantalla d'iniciar sessió.</p>
             "
       expired_at: Vençut el %{timestamp}
       expires_at: Venç en %{timestamp}

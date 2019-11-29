@@ -28,33 +28,33 @@
         <%= invisible_captcha %>
         <div class="card">
           <div class="card__content">
-            <div class="user-person">
+            <div class="user-person" form-step="2" style="display: none">
               <div class="field">
                 <%= f.text_field :name, help_text: t(".username_help") %>
               </div>
             </div>
 
-            <div class="user-nickname">
+            <div class="user-nickname" form-step="2" style="display: none">
               <div class="field">
                 <%= f.text_field :nickname, help_text: t(".nickname_help", organization: current_organization.name), prefix: { value: "@", small: 1, large: 1 } %>
               </div>
             </div>
 
-            <div class="field">
+            <div class="field" form-step="1">
               <%= f.email_field :email %>
             </div>
 
-            <div class="field">
+            <div class="field" form-step="1">
               <%= f.password_field :password, help_text: t(".password_help", minimun_characters: NOBSPW.configuration.min_password_length), autocomplete: "off" %>
             </div>
 
-            <div class="field">
+            <div class="field" form-step="1">
               <%= f.password_field :password_confirmation %>
             </div>
           </div>
         </div>
 
-        <div class="card" id="card__tos">
+        <div class="card" id="card__tos" form-step="1">
           <div class="card__content">
             <legend><%= t(".tos_title") %></legend>
 
@@ -68,7 +68,7 @@
           </div>
         </div>
 
-        <div class="card" id="card__newsletter">
+        <div class="card" id="card__newsletter" form-step="2" style="display: none">
           <div class="card__content">
             <legend><%= t(".newsletter_title") %></legend>
 
@@ -83,7 +83,9 @@
         <div class="card">
           <div class="card__content">
             <div class="actions">
-              <%= f.submit t("devise.registrations.new.sign_up"), class: "button expanded" %>
+              <button class="button expanded form-step-button" form-step="1">Continue</button>
+              <%= f.submit t("devise.registrations.new.sign_up"), class: "button expanded", style: "display: none", "form-step" => 2 %>
+              <button class="button expanded hollow form-step-button" form-step="2" style="display: none">Back</button>
             </div>
             <%= yield :devise_links %>
           </div>

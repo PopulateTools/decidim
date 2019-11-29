@@ -4,7 +4,7 @@ $(() => {
   const inputSelector         = 'input[name="user[sign_up_as]"]';
   const newsletterSelector    = 'input[type="checkbox"][name="user[newsletter]"]';
   const $newsletterModal      = $("#sign-up-newsletter-modal");
-
+  const $formStepsButtons     = $("button.form-step-button");
 
   const setGroupFieldsVisibility = (value) => {
     if (value === "user") {
@@ -41,5 +41,10 @@ $(() => {
 
   $newsletterModal.find(".check-newsletter").on("click", (event) => {
     checkNewsletter($(event.target).data("check"));
+  });
+
+  $formStepsButtons.on("click", (event) => {
+    event.preventDefault();
+    $("[form-step]").toggle();
   });
 });

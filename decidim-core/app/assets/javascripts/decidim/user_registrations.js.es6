@@ -4,9 +4,7 @@ $(() => {
   const inputSelector         = 'input[name="user[sign_up_as]"]';
   const newsletterSelector    = 'input[type="checkbox"][name="user[newsletter]"]';
   const $newsletterModal      = $("#sign-up-newsletter-modal");
-  const $tosCheckbox          = $("#user_tos_agreement");
-  const $nextStepButton       = $('.form-step-button[form-step="1"]');
-  const $previousStepButton   = $('.form-step-button[form-step="2"]');
+  const $formStepButton       = $(".form-step-button");
 
   const setGroupFieldsVisibility = (value) => {
     if (value === "user") {
@@ -41,23 +39,20 @@ $(() => {
     }
   });
 
+  $(document).on("forminvalid.zf.abide", (event) => {
+    if (event.target.id === $userRegistrationForm.attr("id")) {
+      $("[form-step='2']").hide();
+      $("[form-step-field]").show();
+    }
+  });
+
   $newsletterModal.find(".check-newsletter").on("click", (event) => {
     checkNewsletter($(event.target).data("check"));
   });
 
-  $previousStepButton.on("click", (event) => {
+  $formStepButton.on("click", (event) => {
     event.preventDefault();
+
     $("[form-step]").toggle();
-  });
-
-  $nextStepButton.on("click", (event) => {
-    const visibleErrors = $("[form-step='1'] .form-error.is-visible").length > 0;
-    const tosAccepted = $tosCheckbox.prop("checked");
-
-    event.preventDefault();
-
-    if (!visibleErrors && tosAccepted) {
-      $("[form-step]").toggle();
-    }
   });
 });

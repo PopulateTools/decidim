@@ -154,7 +154,7 @@ module Decidim
         I18n.t(
           "decidim.authorization_handlers.errors.duplicate.regular_user_html",
           email: Decidim::AttributeObfuscator.email_hint(other_user.email),
-          reset_password_link: decidim.new_user_password_path
+          logout_link: decidim.destroy_user_session_path
         )
       end
     end

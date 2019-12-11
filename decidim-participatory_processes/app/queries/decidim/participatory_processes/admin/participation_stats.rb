@@ -61,7 +61,9 @@ module Decidim
         def proposals_voters_count
           @proposals_voters_count ||= begin
             proposals = ::Decidim::Proposals::Proposal.where(decidim_component_id: participatory_process.components.pluck(:id))
-            votes = ::Decidim::Proposals::ProposalVote.where(decidim_proposal_id: proposals.pluck(:id))
+            votes = ::Decidim::Proposals::ProposalVote.where(proposal: proposals)
+                                                      .where("created_at <= ?", Time.zone.yesterday.end_of_day) # active_users metric is only available until yesterday
+
             votes.pluck(:decidim_author_id).uniq.size
           end
         end

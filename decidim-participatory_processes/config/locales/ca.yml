@@ -162,6 +162,7 @@ ca:
       participatory_process_stats:
         index:
           stats_title: Estadístiques del procés
+          updated_at: Actualitzat el %{timestamp}
       participatory_process_steps:
         create:
           error: S'ha produït un error en crear una nova fase del procés participatiu.

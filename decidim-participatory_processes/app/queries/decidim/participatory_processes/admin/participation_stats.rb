@@ -51,7 +51,9 @@ module Decidim
         end
 
         def verified_users_count
-          @verified_users_count ||= organization.authorizations.count
+          @verified_users_count ||= organization.authorizations
+                                                .where("decidim_authorizations.created_at <= ?", last_metric_timestamp)
+                                                .count
         end
 
         def active_users_count
@@ -62,7 +64,7 @@ module Decidim
           @proposals_voters_count ||= begin
             proposals = ::Decidim::Proposals::Proposal.where(decidim_component_id: participatory_process.components.pluck(:id))
             votes = ::Decidim::Proposals::ProposalVote.where(proposal: proposals)
-                                                      .where("created_at <= ?", Time.zone.yesterday.end_of_day) # active_users metric is only available until yesterday
+                                                      .where("created_at <= ?", last_metric_timestamp) # active_users metric is only available until yesterday
 
             votes.pluck(:decidim_author_id).uniq.size
           end
@@ -87,6 +89,10 @@ module Decidim
           return nil unless part_count && total_count&.positive?
 
           ((part_count * 100.0) / total_count).round
+        end
+
+        def last_metric_timestamp
+          Time.zone.yesterday.end_of_day
         end
       end
     end

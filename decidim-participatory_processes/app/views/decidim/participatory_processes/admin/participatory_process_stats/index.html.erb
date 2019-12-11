@@ -16,6 +16,10 @@
           <%= @process_stats.values %>
         </tbody>
       </table>
+
+      <p>
+        <i><%= t("participatory_process_stats.index.updated_at", scope: "decidim.admin", timestamp: l(Time.zone.yesterday.end_of_day, format: :decidim_short)) %></i>
+      </p>
     </div>
   </div>
 </div>

@@ -159,6 +159,7 @@ en:
       participatory_process_stats:
         index:
           stats_title: Process statistics
+          updated_at: Updated on %{timestamp}
       participatory_process_step_activations:
         create:
           error: There was a problem activating this participatory process phase.

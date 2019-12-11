@@ -162,6 +162,7 @@ es:
       participatory_process_stats:
         index:
           stats_title: Estadísticas del proceso
+          updated_at: Actualizado el %{timestamp}
       participatory_process_steps:
         create:
           error: Se ha producido un error al crear una nueva fase del proceso participativo.

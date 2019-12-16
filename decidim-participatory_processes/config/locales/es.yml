@@ -282,6 +282,7 @@ es:
       participatory_processes:
         total_registered: Usuarios registrados
         total_verified: Usuarios verificados
+        total_votes: Votos
         active_users: Usuario activos en el proceso
         voting_users: Usuario que han votado
         not_voting_users: Usuario que no han votado

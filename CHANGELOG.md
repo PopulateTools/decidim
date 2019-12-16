@@ -39,6 +39,7 @@ Decidim::Blogs::Post.find_each(&:add_to_index_as_search_resource)
 - **decidim-core**: Added Devise :lockable to Users [#5478](https://github.com/decidim/decidim/pull/5478)
 - **decidim-meetings**: Added help texts for meetings forms to solve doubts about Geocoder fields. [\# #5487](https://github.com/decidim/decidim/pull/5487)
 - **decidim-system**: Permit customizing omniauth settings for each tenant [#5516](https://github.com/decidim/decidim/pull/5516)
+- **decidim-core**: Split signup process in two steps. [\# #5554](https://github.com/decidim/decidim/pull/5554)
 
 **Changed**:
 

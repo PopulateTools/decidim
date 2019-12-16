@@ -4,11 +4,16 @@ module Decidim
   module ParticipatoryProcesses
     module Admin
       class ParticipationStats
-        attr_accessor :participatory_process, :organization
+        attr_accessor(
+          :participatory_process,
+          :organization,
+          :proposals
+        )
 
         def initialize(participatory_process)
           @participatory_process = participatory_process
           @organization = participatory_process.organization
+          @proposals = ::Decidim::Proposals::Proposal.where(decidim_component_id: participatory_process.components.pluck(:id))
         end
 
         def stats
@@ -40,6 +45,12 @@ module Decidim
               count: proposals_not_voters_count,
               percentage: percentage(proposals_not_voters_count, total_users_count),
               relative_percentage: percentage(active_users_count - proposals_voters_count, active_users_count)
+            },
+            {
+              name: "total_votes",
+              count: proposals_votes_count,
+              percentage: nil,
+              relative_percentage: nil
             }
           ]
         end
@@ -61,17 +72,15 @@ module Decidim
         end
 
         def proposals_voters_count
-          @proposals_voters_count ||= begin
-            proposals = ::Decidim::Proposals::Proposal.where(decidim_component_id: participatory_process.components.pluck(:id))
-            votes = ::Decidim::Proposals::ProposalVote.where(proposal: proposals)
-                                                      .where("created_at <= ?", last_metric_timestamp) # active_users metric is only available until yesterday
-
-            votes.pluck(:decidim_author_id).uniq.size
-          end
+          @proposals_voters_count ||= votes.pluck(:decidim_author_id).uniq.size
         end
 
         def proposals_not_voters_count
           @proposals_not_voters_count ||= total_users_count - proposals_voters_count
+        end
+
+        def proposals_votes_count
+          @proposals_votes_count ||= votes.count
         end
 
         def metric_last_value(metric_type, params = {})
@@ -93,6 +102,11 @@ module Decidim
 
         def last_metric_timestamp
           Time.zone.yesterday.end_of_day
+        end
+
+        def votes
+          @votes ||= ::Decidim::Proposals::ProposalVote.where(proposal: proposals)
+                                                       .where("created_at <= ?", last_metric_timestamp) # active_users metric is only available until yesterday
         end
       end
     end

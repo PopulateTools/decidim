@@ -282,6 +282,7 @@ ca:
       participatory_processes:
         total_registered: Usuaris registrats
         total_verified: Usuaris verificats
+        total_votes: Vots
         active_users: Usuaris actius en el procés
         voting_users: Usuaris que han votat
         not_voting_users: Usuaris que no han votat

@@ -393,6 +393,7 @@ en:
         total_percentage: "% of total users"
         total_registered: Total registered users
         total_verified: Total verified users
+        total_votes: Votes
         value: Value
         voting_users: Users that have voted
   layouts:

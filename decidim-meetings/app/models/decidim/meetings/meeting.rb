@@ -14,6 +14,7 @@ module Decidim
       include Decidim::HasCategory
       include Decidim::Followable
       include Decidim::Comments::CommentableWithComponent
+      include Decidim::Comments::HasAvailabilityAttributes
       include Decidim::Searchable
       include Decidim::Traceable
       include Decidim::Loggable

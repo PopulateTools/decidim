@@ -15,8 +15,17 @@ module Decidim
         model.online_meeting_url.present?
       end
 
-      delegate :live?, :show_embedded_iframe?, to: :model
+      delegate :show_embedded_iframe?, to: :model
       delegate :embed_code, :embeddable?, to: :embedder
+
+      private
+
+      def live?
+        model.start_time &&
+          model.end_time &&
+          Time.current >= (model.start_time - 10.minutes) &&
+          Time.current <= model.end_time
+      end
     end
   end
 end

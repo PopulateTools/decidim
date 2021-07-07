@@ -26,6 +26,10 @@ module Decidim
           Time.current >= (model.start_time - 10.minutes) &&
           Time.current <= model.end_time
       end
+
+      def past?
+        Time.current <= model.start_time && !live?
+      end
     end
   end
 end

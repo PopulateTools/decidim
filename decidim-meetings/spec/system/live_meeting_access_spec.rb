@@ -67,7 +67,7 @@ describe "Meeting live event access", type: :system do
     end
   end
 
-  context "when online meeting is not live" do
+  context "when online meeting is not live and is not embedded" do
     let(:meeting) { create :meeting, :published, :online, :past, component: component }
 
     it "doesn't show the link to the live meeting streaming" do
@@ -122,6 +122,16 @@ describe "Meeting live event access", type: :system do
       it "is not live" do
         expect(page).to have_no_content("This meeting is happening right now")
       end
+    end
+  end
+
+  context "when online meeting is not live and is not embedded" do
+    let(:meeting) { create :meeting, :published, :show_embedded_iframe, :online, :embeddable, component: component }
+
+    it "shows the meeting link embedded" do
+      visit_meeting
+
+      expect(page).to have_css("iframe")
     end
   end
 end

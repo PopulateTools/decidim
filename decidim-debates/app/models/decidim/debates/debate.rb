@@ -135,6 +135,11 @@ module Decidim
         followers
       end
 
+      # Public: Overrides the `allow_resource_permissions?` Resourceable concern method.
+      def allow_resource_permissions?
+        true
+      end
+
       def self.export_serializer
         Decidim::Debates::DataPortabilityDebateSerializer
       end

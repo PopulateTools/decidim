@@ -123,7 +123,7 @@ export default class ActivityBrowser {
       let $element = $(e.currentTarget);
       let id = $element.data('id').toString();
 
-      const filteredData = this.arr.filter(i => (i.user_id === id || (i.target_type === 'user' && i.target_id === i.user_id)));
+      const filteredData = this.arr.filter(i => (i.decidim_user_id === id || (i.target_type === 'user' && i.target_id === i.decidim_user_id)));
       this.refreshData(filteredData, false);
     }, (e) => {
       if(this.timerActive || this.nodeSelected) { return false; }
@@ -172,8 +172,8 @@ export default class ActivityBrowser {
 
   getUsers(arr) {
     const usersWithCount = arr.reduce((sums,i) => {
-      if(i.user_id !== undefined && i.user_id !== null && i.user_id.toString().length > 0) {
-        const key = i.user_id
+      if(i.decidim_user_id !== undefined && i.decidim_user_id !== null && i.decidim_user_id.toString().length > 0) {
+        const key = i.decidim_user_id
         if(!(key in sums)) { sums[key] = {count: 0, timestamp: i.timestamp, item_url: i.item_url} }
         sums[key].count++;
       }

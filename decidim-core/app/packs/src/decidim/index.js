@@ -16,6 +16,7 @@ import addInputEmoji from "src/decidim/input_emoji"
 import dialogMode from "src/decidim/dialog_mode"
 import FocusGuard from "src/decidim/focus_guard"
 import backToListLink from "src/decidim/back_to_list"
+import ActivityBrowser from "src/decidim/activity_browser"
 
 window.Decidim = window.Decidim || {};
 window.Decidim.config = new Configuration()
@@ -25,6 +26,7 @@ window.Decidim.FormValidator = FormValidator;
 window.Decidim.DataPicker = DataPicker;
 window.Decidim.CommentsComponent = CommentsComponent;
 window.Decidim.addInputEmoji = addInputEmoji;
+window.Decidim.ActivityBrowser = ActivityBrowser;
 
 $(() => {
   window.theDataPicker = new DataPicker($(".data-picker"));

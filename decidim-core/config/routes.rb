@@ -31,6 +31,9 @@ Decidim::Core::Engine.routes.draw do
     post "omniauth_registrations" => "devise/omniauth_registrations#create"
   end
 
+  get "/activity-browser",      to: "activity_browser#index"
+  get "/activity-browser-data", to: "activity_browser#data"
+
   resource :manifest, only: [:show]
 
   resource :locale, only: [:create]

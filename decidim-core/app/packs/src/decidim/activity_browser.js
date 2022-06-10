@@ -103,7 +103,7 @@ export default class ActivityBrowser {
     });
 
     // Mouse over on contributions
-    $(document).on("hover", 'ul.contributions span', (e) => {
+    $(document).on("mouseenter", 'ul.contributions span', (e) => {
       if(this.timerActive || this.nodeSelected) { return false; }
 
       let $element = $(e.currentTarget);
@@ -112,7 +112,9 @@ export default class ActivityBrowser {
 
       const filteredData = this.arr.filter(i => ((i.item_type === type && i.item_id === id) || (i.target_type === type && i.target_id === id)));
       this.refreshData(filteredData, false);
-    }, (e) => {
+    })
+
+    $(document).on("mouseleave", "ul.contributions span", (e) => {
       if(this.timerActive || this.nodeSelected) { return false; }
       this.refreshData(this.arr, true);
     });
@@ -127,6 +129,7 @@ export default class ActivityBrowser {
       const filteredData = this.arr.filter(i => (i.decidim_user_id === id || (i.target_type === 'user' && i.target_id === i.decidim_user_id)));
       this.refreshData(filteredData, false);
     })
+
     $(document).on("mouseleave", "ul.users span", (e) => {
       if(this.timerActive || this.nodeSelected) { return false; }
       this.refreshData(this.arr, true);
@@ -187,48 +190,57 @@ export default class ActivityBrowser {
 
     console.log(usersTotal.size, usersWithActivity.size, this.selectedRange);
 
-    // Truncate to 3000 nodes
-    if(usersTotal.size > 3000) {
-      if(this.selectedRange === 'all') {
-        usersWithCount = arr.reduce((sums,i) => {
-          if(i.user_id !== undefined && i.user_id !== null && i.user_id.toString().length > 0) {
-            const key = i.user_id
-            if(!(key in sums)) { sums[key] = {count: 0, timestamp: i.timestamp, item_url: i.item_url } }
-            sums[key].count++;
-          }
-          return sums;
-        }, {});
-      } else {
-        const pendingSlots = 3000 - usersWithActivity.size;
-        let pending = 0;
-        usersWithCount = arr.reduce((sums,i) => {
-          const key = i.item_id
-          if(i.item_type === "user") {
-            if(pending <= pendingSlots) {
-              if(!(key in sums)) { sums[key] = {count: 0, timestamp: i.timestamp, item_url: i.item_url } }
-              sums[key].count++;
-              pending++;
-            }
-          } else if(i.user_id !== undefined && i.user_id !== null && i.user_id.toString().length > 0) {
-            if(!(key in sums)) { sums[key] = {count: 0, timestamp: i.timestamp, item_url: i.item_url } }
-            sums[key].count++;
-          }
-          return sums;
-        }, {});
+    // // Truncate to 3000 nodes
+    // if(usersTotal.size > 3000) {
+    //   if(this.selectedRange === 'all') {
+    //     usersWithCount = arr.reduce((sums,i) => {
+    //       if(i.user_id !== undefined && i.user_id !== null && i.user_id.toString().length > 0) {
+    //         const key = i.user_id
+    //         if(!(key in sums)) { sums[key] = {count: 0, timestamp: i.timestamp, item_url: i.item_url } }
+    //         sums[key].count++;
+    //       }
+    //       return sums;
+    //     }, {});
+    //   } else {
+    //     const pendingSlots = 3000 - usersWithActivity.size;
+    //     let pending = 0;
+    //     usersWithCount = arr.reduce((sums,i) => {
+    //       const key = i.item_id
+    //       if(i.item_type === "user") {
+    //         if(pending <= pendingSlots) {
+    //           if(!(key in sums)) { sums[key] = {count: 0, timestamp: i.timestamp, item_url: i.item_url } }
+    //           sums[key].count++;
+    //           pending++;
+    //         }
+    //       } else if(i.user_id !== undefined && i.user_id !== null && i.user_id.toString().length > 0) {
+    //         if(!(key in sums)) { sums[key] = {count: 0, timestamp: i.timestamp, item_url: i.item_url } }
+    //         sums[key].count++;
+    //       }
+    //       return sums;
+    //     }, {});
+    //   }
+    // } else {
+    //   usersWithCount = arr.reduce((sums,i) => {
+    //     const key = i.item_id
+    //     if(i.item_type === "user") {
+    //       if(!(key in sums)) { sums[key] = {count: 0, timestamp: i.timestamp, item_url: i.item_url } }
+    //       sums[key].count++;
+    //     } else if(i.user_id !== undefined && i.user_id !== null && i.user_id.toString().length > 0) {
+    //       if(!(key in sums)) { sums[key] = {count: 0, timestamp: i.timestamp, item_url: i.item_url } }
+    //       sums[key].count++;
+    //     }
+    //     return sums;
+    //   }, {});
+    // }
+
+    usersWithCount = arr.reduce((sums,i) => {
+      const key = i.user_id
+      if(i.user_id !== undefined && i.user_id !== null && i.user_id.toString().length > 0) {
+        if(!(key in sums)) { sums[key] = {count: 0, timestamp: i.timestamp, item_url: i.item_url } }
+        sums[key].count++;
       }
-    } else {
-      usersWithCount = arr.reduce((sums,i) => {
-        const key = i.item_id
-        if(i.item_type === "user") {
-          if(!(key in sums)) { sums[key] = {count: 0, timestamp: i.timestamp, item_url: i.item_url } }
-          sums[key].count++;
-        } else if(i.user_id !== undefined && i.user_id !== null && i.user_id.toString().length > 0) {
-          if(!(key in sums)) { sums[key] = {count: 0, timestamp: i.timestamp, item_url: i.item_url } }
-          sums[key].count++;
-        }
-        return sums;
-      }, {});
-    }
+      return sums;
+    }, {});
 
     return this.mapToSortedArrayWithClass(usersWithCount, 10);
   }
@@ -426,14 +438,13 @@ export default class ActivityBrowser {
       $('#contributions h2 span.partial').html(`${totalContributions} /`);
     }
 
-    $('ul.contributions').html('')
-    //if($('ul.contributions').html().length === 0) {
+    if($('ul.contributions').html().length === 0) {
       // Display contributions by timestamp
       contributions.forEach((contribution) => {
         const [itemType,itemId] = contribution.id.split('_')
         $('ul.contributions').append(`<li><span data-id="${itemId}" data-type="${itemType}" data-tippy-content="${itemType} - ${itemId}"></span></li>`);
       });
-    //}
+    }
 
     // Render users
     let users = null;
@@ -460,13 +471,12 @@ export default class ActivityBrowser {
       $('#users h2 span.partial').html(`${totalUsers} /`);
     }
 
-    $('ul.users').html('')
-    //if($('ul.users').html().length === 0) {
+    if($('ul.users').html().length === 0) {
       // Display users by timestamp
       users.forEach(user => {
         $('ul.users').append(`<li><span data-id="${user.id}" data-type="user" data-tippy-content="user - ${user.id}" class="tooltip"></span></li>`);
       })
-    //}
+    }
 
     this.updateComments(filteredData);
     this.updateVotes(filteredData);

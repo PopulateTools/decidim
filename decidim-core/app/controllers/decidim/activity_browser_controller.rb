@@ -17,7 +17,7 @@ module Decidim
     private
 
     def activity_data
-      # return File.read('/Users/fernando/Desktop/decidim_activities_report.csv')
+      return File.read('/Users/fernando/Desktop/decidim_activities_report.csv')
       return Decidim::Exporters::CSV.new(Decidim::Activity.where(organization: current_organization).map(&:attributes)).export(",").read
 
       headers = %w(timestamp item_type item_id target_type target_id decidim_user_id participatory_space_id participatory_space_type)

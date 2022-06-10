@@ -18,6 +18,7 @@ export default class ActivityBrowser {
     this.timerActive = false;
     this.datesInterval = null;
     this.currentDateIndex = 0;
+    this.selectedRange = 'all';
   }
 
   run() {
@@ -28,17 +29,17 @@ export default class ActivityBrowser {
     tippy('.contributions span');
 
     // Click on date ranges
-    $('[data-time-range]').on('click', (e) => {
+    $(document).on("click", '[data-time-range]', (e) => {
       $('[data-time-range]').removeClass('bold');
 
       const $element = $(e.currentTarget);
       $element.addClass('bold');
 
-      const range = $element.data('time-range');
+      this.selectedRange = $element.data('time-range');
       let filteredData = this.arr;
       const today = new Date();
       let fromRange;
-      switch(range) {
+      switch(this.selectedRange) {
         case 'month':
           fromRange = new Date(new Date().setDate(today.getDate() - 30))
           filteredData = this.filterDataByDateRange(fromRange, this.arr);
@@ -56,7 +57,7 @@ export default class ActivityBrowser {
     });
 
     // Click on timer
-    $('[data-timer]').on('click', () => {
+    $(document).on("click", '[data-timer]', (e) => {
       if (this.timerActive) {
         this.timerActive = false;
         clearInterval(this.datesInterval);
@@ -82,7 +83,7 @@ export default class ActivityBrowser {
     });
 
     // Click on contributons
-    $('ul.contributions span').click((e) => {
+    $(document).on("click", 'ul.contributons span', (e) => {
       if(this.nodeSelected === null) {
         const $element = $(e.currentTarget);
         this.nodeSelected = {type: $element.data('type'), id: $element.data('id') }
@@ -92,7 +93,7 @@ export default class ActivityBrowser {
     });
 
     // Click on users
-    $('ul.users span').click((e) => {
+    $(document).on("click", 'ul.users span', (e) => {
       if(this.nodeSelected === null) {
         const $element = $(e.currentTarget);
         this.nodeSelected = {type: $element.data('type'), id: $element.data('id') }
@@ -102,7 +103,7 @@ export default class ActivityBrowser {
     });
 
     // Mouse over on contributions
-    $('ul.contributions span').hover((e) => {
+    $(document).on("hover", 'ul.contributions span', (e) => {
       if(this.timerActive || this.nodeSelected) { return false; }
 
       let $element = $(e.currentTarget);
@@ -117,7 +118,7 @@ export default class ActivityBrowser {
     });
 
     // Mouse over on users
-    $('ul.users span').hover((e) => {
+    $(document).on("mouseenter", 'ul.users span', (e) => {
       if(this.timerActive || this.nodeSelected) { return false; }
 
       let $element = $(e.currentTarget);
@@ -125,7 +126,8 @@ export default class ActivityBrowser {
 
       const filteredData = this.arr.filter(i => (i.decidim_user_id === id || (i.target_type === 'user' && i.target_id === i.decidim_user_id)));
       this.refreshData(filteredData, false);
-    }, (e) => {
+    })
+    $(document).on("mouseleave", "ul.users span", (e) => {
       if(this.timerActive || this.nodeSelected) { return false; }
       this.refreshData(this.arr, true);
     });
@@ -171,14 +173,62 @@ export default class ActivityBrowser {
   }
 
   getUsers(arr) {
-    const usersWithCount = arr.reduce((sums,i) => {
-      if(i.decidim_user_id !== undefined && i.decidim_user_id !== null && i.decidim_user_id.toString().length > 0) {
-        const key = i.decidim_user_id
-        if(!(key in sums)) { sums[key] = {count: 0, timestamp: i.timestamp, item_url: i.item_url} }
-        sums[key].count++;
+    let usersTotal = new Set();
+    let usersWithActivity = new Set();
+    let usersWithCount = {};
+    arr.forEach(i => {
+      if(i.item_type === "user"){
+        usersTotal.add(i.item_id)
+      } else if (i.user_id !== undefined && i.user_id !== null && i.user_id.toString().length > 0) {
+        usersTotal.add(i.user_id)
+        usersWithActivity.add(i.user_id)
       }
-      return sums;
-    }, {});
+    });
+
+    console.log(usersTotal.size, usersWithActivity.size, this.selectedRange);
+
+    // Truncate to 3000 nodes
+    if(usersTotal.size > 3000) {
+      if(this.selectedRange === 'all') {
+        usersWithCount = arr.reduce((sums,i) => {
+          if(i.user_id !== undefined && i.user_id !== null && i.user_id.toString().length > 0) {
+            const key = i.user_id
+            if(!(key in sums)) { sums[key] = {count: 0, timestamp: i.timestamp, item_url: i.item_url } }
+            sums[key].count++;
+          }
+          return sums;
+        }, {});
+      } else {
+        const pendingSlots = 3000 - usersWithActivity.size;
+        let pending = 0;
+        usersWithCount = arr.reduce((sums,i) => {
+          const key = i.item_id
+          if(i.item_type === "user") {
+            if(pending <= pendingSlots) {
+              if(!(key in sums)) { sums[key] = {count: 0, timestamp: i.timestamp, item_url: i.item_url } }
+              sums[key].count++;
+              pending++;
+            }
+          } else if(i.user_id !== undefined && i.user_id !== null && i.user_id.toString().length > 0) {
+            if(!(key in sums)) { sums[key] = {count: 0, timestamp: i.timestamp, item_url: i.item_url } }
+            sums[key].count++;
+          }
+          return sums;
+        }, {});
+      }
+    } else {
+      usersWithCount = arr.reduce((sums,i) => {
+        const key = i.item_id
+        if(i.item_type === "user") {
+          if(!(key in sums)) { sums[key] = {count: 0, timestamp: i.timestamp, item_url: i.item_url } }
+          sums[key].count++;
+        } else if(i.user_id !== undefined && i.user_id !== null && i.user_id.toString().length > 0) {
+          if(!(key in sums)) { sums[key] = {count: 0, timestamp: i.timestamp, item_url: i.item_url } }
+          sums[key].count++;
+        }
+        return sums;
+      }, {});
+    }
 
     return this.mapToSortedArrayWithClass(usersWithCount, 10);
   }
@@ -328,8 +378,6 @@ export default class ActivityBrowser {
     // Scale the range of the data in the y domain
     y.domain([0, max(bins, function(d) { return d.length; })]);
 
-    debugger
-
     // append the bar rectangles to the svg element
     svg.selectAll("rect")
       .data(bins)
@@ -378,13 +426,14 @@ export default class ActivityBrowser {
       $('#contributions h2 span.partial').html(`${totalContributions} /`);
     }
 
-    if($('ul.contributions').html().length === 0) {
+    $('ul.contributions').html('')
+    //if($('ul.contributions').html().length === 0) {
       // Display contributions by timestamp
       contributions.forEach((contribution) => {
         const [itemType,itemId] = contribution.id.split('_')
         $('ul.contributions').append(`<li><span data-id="${itemId}" data-type="${itemType}" data-tippy-content="${itemType} - ${itemId}"></span></li>`);
       });
-    }
+    //}
 
     // Render users
     let users = null;
@@ -411,12 +460,13 @@ export default class ActivityBrowser {
       $('#users h2 span.partial').html(`${totalUsers} /`);
     }
 
-    if($('ul.users').html().length === 0) {
+    $('ul.users').html('')
+    //if($('ul.users').html().length === 0) {
       // Display users by timestamp
       users.forEach(user => {
-        $('ul.users').append(`<li><span data-id="${user.id}" data-type="user" data-tippy-content="user - ${user.id}"></span></li>`);
+        $('ul.users').append(`<li><span data-id="${user.id}" data-type="user" data-tippy-content="user - ${user.id}" class="tooltip"></span></li>`);
       })
-    }
+    //}
 
     this.updateComments(filteredData);
     this.updateVotes(filteredData);

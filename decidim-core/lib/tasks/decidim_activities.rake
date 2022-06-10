@@ -501,7 +501,7 @@ namespace :decidim do
         ::Decidim::ResourceLocatorPresenter.new(item).url
       end
     rescue => e
-      "FAIL"
+      nil
     end
 
     def locator_title(item)
@@ -511,7 +511,7 @@ namespace :decidim do
 
       item.try(:title) || item.try(:name) || item.try(:subject) || "#{resource.model_name.human} ##{resource.id}"
     rescue
-      "0000_FAIL"
+      nil
     end
 
     def user_title(item)
@@ -521,7 +521,7 @@ namespace :decidim do
     def comment_url(item)
       item.reported_content_url
     rescue
-      "FAIL"
+      nil
     end
 
     def user_url(item)

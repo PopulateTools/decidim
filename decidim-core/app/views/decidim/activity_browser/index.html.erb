@@ -1,0 +1,96 @@
+<div class="row">
+  <h2>Date</h2>
+  <p class="time_ranges">
+    <a href="#" data-timer>Start timer</a> -
+    <a href="#" data-time-range="month">Last month</a> -
+    <a href="#" data-time-range="year">Last year</a> -
+    <a href="#" data-time-range="all" class="bold">All</a>
+  </p>
+  <div class="date"></div>
+
+  <div id="users" class="columns medium-4">
+    <h2>People <span class="partial"></span> <span class="total"></span></h2>
+    <div class="content">
+      <ul class="users cloud"></ul>
+    </div>
+    <div id="users-histogram"></div>
+  </div>
+
+  <div id="interactions" class="columns medium-4">
+    <h2>Interactions</h2>
+    <div class="content">
+      <div class="comments"></div>
+      <div class="votes"></div>
+      <div class="supports"></div>
+      <div class="followings"></div>
+    </div>
+  </div>
+
+  <div id="contributions" class="columns medium-4">
+    <h2>Contributions <span class="partial"></span> <span class="total"></span></h2>
+    <div class="content">
+      <ul class="contributions cloud"></ul>
+    </div>
+    <div id="contributions-histogram"></div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+<script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css" />
+
+<style>
+.time_ranges .bold {
+  font-weight: bold;
+}
+
+.content {
+  font-size: 180%;
+}
+.cloud {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  line-height: 2.5rem;
+}
+.cloud span {
+  background-color: #000;
+  opacity: 0.03;
+  display: block;
+  font-size: 1.5rem;
+  padding: 0.125rem 0.25rem;
+  text-decoration: none;
+  margin: 0.1rem;
+  position: relative;
+  height: 0.5rem;
+  width: 0.5rem;
+}
+.cloud span.active10 { background-color: #000; opacity: 1;}
+.cloud span.active9  { background-color: #000; opacity: 0.9;}
+.cloud span.active8  { background-color: #000; opacity: 0.8;}
+.cloud span.active7  { background-color: #000; opacity: 0.7;}
+.cloud span.active6  { background-color: #000; opacity: 0.6;}
+.cloud span.active5  { background-color: #000; opacity: 0.5;}
+.cloud span.active4  { background-color: #000; opacity: 0.4;}
+.cloud span.active3  { background-color: #000; opacity: 0.3;}
+.cloud span.active2  { background-color: #000; opacity: 0.2;}
+.cloud span.active1  { background-color: #000; opacity: 0.1;}
+
+</style>
+
+<script>
+window.addEventListener('DOMContentLoaded', (event) => {
+  jQuery.ajax({
+    url: "/activity-browser-data.csv",
+    type: "get",
+      success: function(data) {
+          const activityBrowser = new window.Decidim.ActivityBrowser(data);
+          activityBrowser.run()
+        },
+    error: function(data) {console.log("Error!")}
+  });
+})
+</script>

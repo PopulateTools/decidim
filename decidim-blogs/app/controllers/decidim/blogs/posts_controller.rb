@@ -6,6 +6,8 @@ module Decidim
     class PostsController < Decidim::Blogs::ApplicationController
       include Flaggable
 
+      redesign active: true
+
       helper_method :posts, :post, :paginate_posts, :posts_most_commented
 
       def index; end
@@ -15,7 +17,7 @@ module Decidim
       private
 
       def paginate_posts
-        @paginate_posts ||= posts.created_at_desc.page(params[:page]).per(4)
+        @paginate_posts ||= posts.created_at_desc.page(params[:page]).per(params[:per_page])
       end
 
       def post

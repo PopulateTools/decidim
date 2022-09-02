@@ -58,7 +58,6 @@ import "src/decidim/notifications"
 import "src/decidim/identity_selector_dialog"
 import "src/decidim/gallery"
 import "src/decidim/back_to_list"
-import "src/decidim/cookie_consent/cookie_consent"
 import "src/decidim/view_more"
 
 // CSS

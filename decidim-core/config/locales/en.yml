@@ -1662,7 +1662,6 @@ en:
           all_cookies: all cookies
           change_cookie_settings: Change cookie settings
           need_cookies: You need to enable %{cookies} in order to see this content.
->>>>>>> 634186a0e3 (Announcement toggle component)
       edit_link:
         edit: Edit
       footer:

@@ -236,19 +236,19 @@ ca:
           assigned: Assignat
           budget: Pressupost
           dynamic_help:
-            keep_adding_projects: Continua afegint projects
-            minimum_reached: Has arrivat al mínim per a poder votar
+            keep_adding_projects: Continua afegint projectes
+            minimum_reached: Has arribat al mínim per a poder votar. Ara només et falta confirmar el teu vot.
             start_adding_projects: Comença a afegir projectes
           minimum: Mínim
           minimum_projects_rule:
-            description: Tria almenys %{minimum_number} projectes que vullgues votar i vota d'acord a les teves preferències per a definir el pressupost.
+            description: Tria almenys %{minimum_number} projectes que vulguis votar i vota d'acord a les teves preferències per a definir el pressupost.
           projects_rule:
-            description: Tria almenys %{minimum_number} i fins a %{maximum_number} projectes que vullgues votar i vota d'acord a les teves preferències per a definir el pressupost.
+            description: Tria almenys %{minimum_number} i fins a %{maximum_number} projectes que vulguis votar i vota d'acord a les teves preferències per a definir el pressupost.
           projects_rule_maximum_only:
-            description: Tria fins a %{maximum_number} projectes que vullgues votar i vota d'acord a les teves preferències per a definir el pressupost.
+            description: Tria fins a %{maximum_number} projectes que vulguis votar i vota d'acord a les teves preferències per a definir el pressupost.
           vote: Vota
           vote_threshold_percent_rule:
-            description: Assigna almenys %{minimum_budget} als projectes que vullgues votar i vota d'acord a les teves preferències per a definir el pressupost.
+            description: Assigna almenys %{minimum_budget} als projectes que vulguis votar i vota d'acord a les teves preferències per a definir el pressupost.
         order_selected_projects:
           remove: Esborrar
           selected_projects:

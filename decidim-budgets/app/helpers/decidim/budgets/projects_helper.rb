@@ -45,9 +45,13 @@ module Decidim
       # Returns false if the current order has not reached the minimum budget
       # Otherwhise returns true
       def current_order_minimum_reached?
-        return false if current_order.minimum_budget.zero?
+        if current_order.projects_rule?
+          current_order.projects.count >= current_order.minimum_projects
+        else
+          return false if current_order.minimum_budget.zero?
 
-        current_order.total >= current_order.minimum_budget
+          current_order.total >= current_order.minimum_budget
+        end
       end
 
       def current_rule_call_for_action_text
@@ -83,7 +87,7 @@ module Decidim
                       t(".vote_threshold_percent_rule.description", minimum_budget: budget_to_currency(current_order.minimum_budget))
                     end
 
-        %(<strong>#{current_rule_call_for_action_text}</strong>. #{rule_text} #{cell("decidim/budgets/budget_information_modal", budget)}).html_safe
+        %(<strong>#{current_rule_call_for_action_text}</strong> #{rule_text} #{cell("decidim/budgets/budget_information_modal", budget)}).html_safe
       end
     end
   end

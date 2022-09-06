@@ -21,6 +21,8 @@ module Decidim
         return 0 if current_order.minimum_projects_rule?
 
         if current_order.projects_rule?
+          # 30 is a value that ensures the text below can be shown
+          return 30 if current_order.minimum_projects.zero?
           (current_order.minimum_projects.to_f / current_order.maximum_projects) * 100
         else
           component_settings.vote_threshold_percent

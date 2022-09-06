@@ -218,6 +218,7 @@ en:
         order_progress:
           assigned: Assigned
           budget: Budget
+          projects: Projects
           dynamic_help:
             keep_adding_projects: Keep adding projects
             minimum_reached: You have reached the minimum to be able to vote

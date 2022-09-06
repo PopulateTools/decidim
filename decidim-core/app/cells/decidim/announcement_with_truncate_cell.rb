@@ -40,6 +40,14 @@ module Decidim
       end
     end
 
+    def has_more_than_one_line?
+      if has_title?
+        clean_body(truncate_text: true).size > 50
+      else
+        clean_announcement(truncate_text: true).size > 50
+      end
+    end
+
     def has_title?
       announcement.is_a?(Hash) && announcement.has_key?(:title)
     end

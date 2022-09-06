@@ -235,6 +235,7 @@ ca:
           vote: Vota
           assigned: Assignat
           budget: Pressupost
+          projects: Projectes
           dynamic_help:
             keep_adding_projects: Continua afegint projectes
             minimum_reached: Has arribat al mínim per a poder votar. Ara només et falta confirmar el teu vot.

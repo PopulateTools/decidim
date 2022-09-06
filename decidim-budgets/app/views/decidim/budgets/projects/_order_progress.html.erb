@@ -34,7 +34,12 @@
           </span>
         <% end %>
         <span class="mini-title budget-progress_right_mark" data-total-allocation="<%= current_order.available_allocation %>">
-          <%= t(".budget") %><br>
+          <% if current_order.projects_rule? %>
+            <%= t(".projects") %>
+          <% else %>
+            <%= t(".budget") %>
+          <% end %>
+          <br>
           <strong class="mini-title__strong">
             <% if current_order.projects_rule? %>
               <%= current_order.maximum_projects %>

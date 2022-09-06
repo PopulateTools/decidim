@@ -21,7 +21,7 @@ module Decidim
         return 0 if current_order.minimum_projects_rule?
 
         if current_order.projects_rule?
-          (current_order.minimum_projects.to_f / current_order.maximum_projects)
+          (current_order.minimum_projects.to_f / current_order.maximum_projects) * 100
         else
           component_settings.vote_threshold_percent
         end

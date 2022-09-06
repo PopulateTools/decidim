@@ -235,6 +235,7 @@ es:
           vote: Vota
           assigned: Asignado
           budget: Presupuesto
+          projects: Proyectos
           dynamic_help:
             keep_adding_projects: Continua añadiendo proyectos
             minimum_reached: Has llegado al mínimo para poder votar. Ahora sólo te falta confirmar tu voto.

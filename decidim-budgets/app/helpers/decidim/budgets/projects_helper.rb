@@ -47,7 +47,7 @@ module Decidim
       def current_order_minimum_reached?
         return false if current_order.minimum_budget.zero?
 
-        current_order.total > current_order.minimum_budget
+        current_order.total >= current_order.minimum_budget
       end
 
       def current_rule_call_for_action_text

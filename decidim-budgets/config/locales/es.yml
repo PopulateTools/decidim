@@ -237,7 +237,7 @@ es:
           budget: Presupuesto
           dynamic_help:
             keep_adding_projects: Continua añadiendo proyectos
-            minimum_reached: Has llegado al mínimo para poder votar
+            minimum_reached: Has llegado al mínimo para poder votar. Ahora sólo te falta confirmar tu voto.
             start_adding_projects: Comienza a añadir proyectos
           minimum: Mínimo
           minimum_projects_rule:

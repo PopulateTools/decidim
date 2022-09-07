@@ -1,4 +1,4 @@
-<%= render partial: "decidim/shared/component_announcement" %>
+<%= render partial: "decidim/shared/component_announcement_with_truncate" %>
 
 <% if component_settings.geocoding_enabled? %>
   <%= dynamic_map_for proposals_data_for_map(@all_geocoded_proposals) do %>

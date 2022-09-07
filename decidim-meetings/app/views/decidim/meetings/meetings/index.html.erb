@@ -1,4 +1,4 @@
-<%= render partial: "decidim/shared/component_announcement" %>
+<%= render partial: "decidim/shared/component_announcement_with_truncate" %>
 
 <% if current_component.settings.maps_enabled? && search.results.not_online.exists? %>
   <%= cell "decidim/meetings/meetings_map", search.results %>

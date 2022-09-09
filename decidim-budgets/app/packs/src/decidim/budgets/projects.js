@@ -2,7 +2,6 @@ $(() => {
   const $projects = $("#projects, #project");
   const $budgetSummaryTotal = $(".budget-progress_right_mark");
   const $budgetExceedModal = $("#budget-excess");
-  const $budgetSummary = $(".budget-summary__progressbox");
   const $voteButton = $(".budget-vote-button");
   const totalAllocation = parseInt($budgetSummaryTotal.attr("data-total-allocation"), 10);
 
@@ -17,7 +16,7 @@ $(() => {
   });
 
   $projects.on("click", ".budget-list__action", (event) => {
-    const currentAllocation = parseInt($budgetSummary.attr("data-current-allocation"), 10);
+    const currentAllocation = parseInt($(".budget-summary__progressbox").attr("data-current-allocation"), 10);
     const $currentTarget = $(event.currentTarget);
     const projectAllocation = parseInt($currentTarget.attr("data-allocation"), 10);
 

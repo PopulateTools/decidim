@@ -55,17 +55,34 @@ export default Link.extend({
 
       linkDialog: () => async ({ dispatch, commands }) => {
         if (dispatch) {
+          // Check if the selection is an image
+          const isImage = this.editor.isActive("image");
+
           // If the cursor is within the link but the link is not selected, the
           // link would not be correctly updated. Also if only a part of the
           // link is selected, the link would be split to separate links, only
           // the current selection getting the updated link URL.
-          commands.extendMarkRange("link");
+          if (!isImage) {
+            commands.extendMarkRange("link");
+          }
 
           this.storage.bubbleMenu.hide();
 
           const { allowTargetControl } = this.options;
 
           let { href, target } = this.editor.getAttributes("link");
+          let src = null;
+
+          // If it's an image, get the src attribute
+          if (isImage) {
+            const imageAttrs = this.editor.getAttributes("image");
+            src = imageAttrs.src;
+            // Check if the image is already wrapped in an imageLink
+            const imageLinkAttrs = this.editor.getAttributes("imageLink");
+            if (imageLinkAttrs.href) {
+              href = imageLinkAttrs.href;
+            }
+          }
 
           const inputs = { href: { type: "text", label: i18n.hrefLabel } };
           if (allowTargetControl) {
@@ -95,7 +112,27 @@ export default Link.extend({
           }
 
           if (!href || href.trim().length < 1) {
+            if (isImage) {
+              // For images, we don't unset anything if there's no href
+              return this.editor.chain().focus(null, { scrollIntoView: false }).run();
+            }
             return this.editor.chain().focus(null, { scrollIntoView: false }).unsetLink().run();
+          }
+
+          // If it's an image, use setImageLink command
+          if (isImage) {
+            this.editor.chain()
+              .focus(null, { scrollIntoView: false })
+              .setImageLink({
+                href,
+                src,
+                HTMLAttributes: {
+                  target: target || "_blank"
+                }
+              })
+              .run();
+
+            return true;
           }
 
           return this.editor.chain().focus(null, { scrollIntoView: false }).setLink({ href, target }).toggleLinkBubble().run();

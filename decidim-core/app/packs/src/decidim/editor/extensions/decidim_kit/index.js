@@ -16,6 +16,7 @@ import Mention from "src/decidim/editor/extensions/mention";
 import MentionResource from "src/decidim/editor/extensions/mention_resource";
 import VideoEmbed from "src/decidim/editor/extensions/video_embed";
 import Emoji from "src/decidim/editor/extensions/emoji";
+import ImageLink from "tiptap-extension-image-link";
 
 export default Extension.create({
   name: "decidimKit",
@@ -47,6 +48,7 @@ export default Extension.create({
       }),
       CharacterCount.configure(this.options.characterCount),
       Link.configure({ openOnClick: false, ...this.options.link }),
+      ImageLink,
       Bold,
       Dialog,
       Indent,

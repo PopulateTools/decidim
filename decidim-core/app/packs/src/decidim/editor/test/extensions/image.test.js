@@ -48,7 +48,7 @@ describe("Image", () => {
   `
   }
 
-  const updateFile = async (path, alt) => {
+  const updateFile = async (path, alt, href = null) => {
     uploadFilePath = path;
     const dz = uploadDialogElement.querySelector("[data-dropzone]");
     dz.files = [{ name: "image.jpg" }];
@@ -56,6 +56,12 @@ describe("Image", () => {
     await sleep(0);
 
     uploadDialogElement.querySelector("input[name='alt']").value = alt;
+    if (href !== null) {
+      const hrefInput = uploadDialogElement.querySelector("input[name='href']");
+      if (hrefInput) {
+        hrefInput.value = href;
+      }
+    }
 
     uploadDialogElement.querySelector("[data-dropzone-save]").click();
     uploadDialogElement.dispatchEvent(new CustomEvent("close.dialog"));
@@ -170,6 +176,83 @@ describe("Image", () => {
         <img src="/path/to/logo.png" alt="logo">
       </div>
     `);
+  });
+
+  it("allows setting an image with a link through the dialog", async () => {
+    editor.commands.imageDialog();
+    await updateFile("/path/to/image.jpg", "Test text", "https://example.com");
+
+    expect(editor.getHTML()).toMatchHtml(`
+      <a href="https://example.com" target="_blank" rel="noopener noreferrer">
+        <div class="editor-content-image" data-image="">
+          <img src="/path/to/image.jpg" alt="Test text">
+        </div>
+      </a>
+    `);
+  });
+
+  it("allows editing an image to add a link", async () => {
+    editorElement.focus();
+    await updateContent(editorElement,
+      '<div class="editor-content-image" data-image=""><img src="/path/to/image.jpg" alt="Test text"></div>'
+    );
+
+    editor.commands.imageDialog();
+    await updateFile("/path/to/image.jpg", "Test text", "https://example.com");
+
+    expect(editor.getHTML()).toMatchHtml(`
+      <a href="https://example.com" target="_blank" rel="noopener noreferrer">
+        <div class="editor-content-image" data-image="">
+          <img src="/path/to/image.jpg" alt="Test text">
+        </div>
+      </a>
+    `);
+  });
+
+  it("allows editing an image to remove a link", async () => {
+    editorElement.focus();
+    await updateContent(editorElement,
+      '<a href="https://example.com" target="_blank"><div class="editor-content-image" data-image=""><img src="/path/to/image.jpg" alt="Test text"></div></a>'
+    );
+
+    editor.commands.imageDialog();
+    await updateFile("/path/to/image.jpg", "Test text", "");
+
+    expect(editor.getHTML()).toMatchHtml(`
+      <div class="editor-content-image" data-image="">
+        <img src="/path/to/image.jpg" alt="Test text">
+      </div>
+    `);
+  });
+
+  it("allows editing an image to change the link", async () => {
+    editorElement.focus();
+    await updateContent(editorElement,
+      '<a href="https://example.com" target="_blank"><div class="editor-content-image" data-image=""><img src="/path/to/image.jpg" alt="Test text"></div></a>'
+    );
+
+    editor.commands.imageDialog();
+    await updateFile("/path/to/image.jpg", "Test text", "https://newlink.com");
+
+    expect(editor.getHTML()).toMatchHtml(`
+      <a href="https://newlink.com" target="_blank" rel="noopener noreferrer">
+        <div class="editor-content-image" data-image="">
+          <img src="/path/to/image.jpg" alt="Test text">
+        </div>
+      </a>
+    `);
+  });
+
+  it("parses HTML with linked images correctly", async () => {
+    editorElement.focus();
+    await updateContent(editorElement,
+      '<a href="https://example.com"><div class="editor-content-image" data-image=""><img src="/path/to/image.jpg" alt="Test text"></div></a>'
+    );
+
+    const attrs = editor.getAttributes("image");
+    expect(attrs.href).toBe("https://example.com");
+    expect(attrs.alt).toBe("Test text");
+    expect(attrs.src).toBe("/path/to/image.jpg");
   });
 
   describe("resizing", () => {

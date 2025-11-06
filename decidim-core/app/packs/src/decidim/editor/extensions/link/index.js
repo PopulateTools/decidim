@@ -36,6 +36,20 @@ export default Link.extend({
 
   addCommands() {
     const i18n = getDictionary("editor.extensions.link");
+    const findNodeByAttribute = (doc, nodeType, attrName, attrValue) => {
+      let foundNode = null;
+      let foundPos = null;
+
+      doc.descendants((node, pos) => {
+        if (node.type.name === nodeType && node.attrs[attrName] === attrValue) {
+          foundNode = node;
+          foundPos = pos;
+          return false; // stop searching
+        }
+      });
+
+      return { node: foundNode, pos: foundPos };
+    };
 
     return {
       ...this.parent?.(),
@@ -72,11 +86,13 @@ export default Link.extend({
 
           let { href, target } = this.editor.getAttributes("link");
           let src = null;
+          let originalWidth = null;
 
-          // If it's an image, get the src attribute
+          // If it's an image, get the src attribute and preserve the width
           if (isImage) {
             const imageAttrs = this.editor.getAttributes("image");
             src = imageAttrs.src;
+            originalWidth = imageAttrs.width;
             // Check if the image is already wrapped in an imageLink
             const imageLinkAttrs = this.editor.getAttributes("imageLink");
             if (imageLinkAttrs.href) {
@@ -121,6 +137,7 @@ export default Link.extend({
 
           // If it's an image, use setImageLink command
           if (isImage) {
+            // First apply the image link
             this.editor.chain()
               .focus(null, { scrollIntoView: false })
               .setImageLink({
@@ -131,6 +148,21 @@ export default Link.extend({
                 }
               })
               .run();
+
+            // After setImageLink, find the image node by its src and update the width
+            // Small delay to ensure the node is fully created after setImageLink
+            setTimeout(() => {
+              const { state, view } = this.editor;
+              const { node: imageNode, pos: imagePos } = findNodeByAttribute(state.doc, "image", "src", src);
+
+              if (imageNode && imagePos !== null) {
+                const tr = state.tr.setNodeMarkup(imagePos, null, {
+                  ...imageNode.attrs,
+                  width: originalWidth
+                });
+                view.dispatch(tr);
+              }
+            }, 10);
 
             return true;
           }

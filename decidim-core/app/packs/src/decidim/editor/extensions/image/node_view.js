@@ -77,26 +77,33 @@ export default (self) => {
       naturalWidth = tmpImg.naturalWidth;
       naturalHeight = tmpImg.naturalHeight;
 
+      // Get the current width from the node (it might have been updated)
+      const currentNode = editor.view.state.doc.nodeAt(getPos());
+      const currentNodeWidth = currentNode ? currentNode.attrs.width : givenWidth;
+
       // Set currentWidth and currentHeight
-      if (givenWidth === null) {
+      if (currentNodeWidth === null) {
         currentWidth = naturalWidth;
         currentHeight = naturalHeight;
       } else {
-        currentWidth = givenWidth;
+        currentWidth = currentNodeWidth;
         currentHeight = Math.round(naturalHeight * (currentWidth / naturalWidth));
       }
 
       // Force node update in order to set the initial dimensions
-      [{ ...node.attrs, width: 1 }, node.attrs].forEach((newAttrs) => {
-        // The `setTimeout` below is to push the node updates to the next JS
-        // event loop so that we are not triggering a change in the element
-        // before it is created as would happen e.g. during the Jest tests.
-        setTimeout(() => {
-          editor.view.dispatch(
-            editor.view.state.tr.setNodeMarkup(getPos(), self.type, newAttrs)
-          );
-        }, 0);
-      });
+      // Only do this if the node wasn't already updated with a specific width
+      if (currentNodeWidth === givenWidth) {
+        [{ ...node.attrs, width: 1 }, node.attrs].forEach((newAttrs) => {
+          // The `setTimeout` below is to push the node updates to the next JS
+          // event loop so that we are not triggering a change in the element
+          // before it is created as would happen e.g. during the Jest tests.
+          setTimeout(() => {
+            editor.view.dispatch(
+              editor.view.state.tr.setNodeMarkup(getPos(), self.type, newAttrs)
+            );
+          }, 0);
+        });
+      }
     }
     tmpImg.src = img.src;
 
@@ -186,6 +193,12 @@ export default (self) => {
         }
 
         const { alt, src, title, width } = updatedNode.attrs;
+
+        // Update currentWidth and currentHeight if width has changed
+        if (width !== null && width !== undefined && width !== currentWidth) {
+          currentWidth = width;
+          currentHeight = Math.round(naturalHeight * (currentWidth / naturalWidth));
+        }
 
         // We set the value through an attribute change here because otherwise
         // we would trigger a mutation in the DOM which causes the update method

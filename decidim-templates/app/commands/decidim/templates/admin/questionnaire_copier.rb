@@ -7,7 +7,7 @@ module Decidim
       module QuestionnaireCopier
         def copy_questionnaire_questions(original_questionnaire, new_questionnaire)
           # start by copying the questions so that they already exist when cross referencing them in the conditions
-          original_questions = original_questionnaire.reload.questions.includes(:response_options, :matrix_rows, display_conditions: [:condition_question, :response_option]).to_a
+          original_questions = original_questionnaire.reload.questions.includes(:answer_options, :matrix_rows, display_conditions: [:condition_question, :answer_option]).to_a
           original_questions.each do |original_question|
             new_question = original_question.dup
             new_question.questionnaire = new_questionnaire
@@ -22,9 +22,9 @@ module Decidim
             copy_questionnaire_matrix_rows(original_question, new_question)
           end
           # once all questions are copied, copy display conditions. The destination
-          # questions are looked up by position (and their response options by body)
+          # questions are looked up by position (and their answer options by body)
           # while cross referencing the conditions, so eager load them to avoid N+1s.
-          destination_questions = new_questionnaire.questions.includes(:response_options).to_a
+          destination_questions = new_questionnaire.questions.includes(:answer_options).to_a
           original_questions.zip(destination_questions).each do |original_question, new_question|
             copy_question_display_conditions(original_question, new_question, destination_questions)
           end

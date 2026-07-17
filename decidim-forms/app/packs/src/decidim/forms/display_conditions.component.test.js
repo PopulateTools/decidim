@@ -13,7 +13,7 @@ describe("DisplayConditionsComponent", () => {
         <div class="js-collection-input">
           <input name="resp[${qid}][body]" type="radio" value="${opt.value}" />
           <input name="resp[${qid}][custom_body]" type="text" />
-          <input name="resp[${qid}][response_option_id]" type="hidden" value="${opt.optionId}" />
+          <input name="resp[${qid}][answer_option_id]" type="hidden" value="${opt.optionId}" />
         </div>
       `).join("")}
     </div>
